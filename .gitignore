@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+# hidden sources
+*._cpp
+*._h
+*._py
+*~
+
+# build directory
+make
+build
