@@ -11,7 +11,7 @@ using namespace std;
 Mat read_text_file(const char *file_name, const int width)
 {
     cout << "hello" << endl;
-    float elevations[5000][width];
+    float *elevations[10000][width];
     Mat image_dest;
     ifstream f(file_name);
 
@@ -86,25 +86,26 @@ Mat read_text_file(const char *file_name, const int width)
     return image_dest;
 }
 
-void process(const char *file_name, const int width, const char *imdname)
+void process(const char *file_name, const int width)
 {
+    //../doc/Guerledan_Feb19_50cm_wgs84.txt
     Mat image = read_text_file(file_name, width);
     // imwrite(imdname, image);
 }
 
 void usage(const char *s)
 {
-    std::cerr << "Usage: " << s << " imsname width imdname\n"
+    std::cerr << "Usage: " << s << " file_name width\n"
               << std::endl;
     exit(EXIT_FAILURE);
 }
 
-#define param 3
+#define param 2
 int main(int argc, char *argv[])
 {
     if (argc != (param + 1))
         usage(argv[0]);
-    process(argv[1], atoi(argv[2]), argv[3]);
+    process(argv[1], atoi(argv[2]));
 
     return EXIT_SUCCESS;
 }
