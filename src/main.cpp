@@ -54,7 +54,7 @@ using namespace std;
 Mat read_text_file(const char *file_name, const int width)
 {
     map<pair<float, float>, float> elevations;
-    map<pair<int, int>, float> pixels;
+    map<pair<int, int>, int> pixels;
     vector<double> coords;
     Mat image_dest;
     ifstream in_file(file_name);
@@ -93,6 +93,8 @@ Mat read_text_file(const char *file_name, const int width)
             // printf("longitude: %g, latitude: %g, elevation: %g\n", coord_lambert93.lpz.lam, coord_lambert93.lpz.phi, coord_lambert93.lpz.z);
             coords.push_back(x);
             coords.push_back(y);
+            // elevations.insert(make_pair(make_pair(x, y), elevation));
+
             elevations[make_pair(x, y)] = elevation;
             //update elevation range
             if (first_data)
@@ -155,10 +157,17 @@ Mat read_text_file(const char *file_name, const int width)
             float y2 = d.coords[2 * d.triangles[i + 2] + 1];
         }
 
-        ofstream ofile;
-        ofile.open("ascii_gray.pgm");
         cout << "xmin =" << xmin << " xmax=" << xmax << " ymin=" << ymin << " ymax=" << ymax << endl;
         int height = (int)(abs(xmax - xmin) * width / abs(ymax - ymin));
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                pixels[make_pair(i, j)] = 0;
+            }
+        }
+        ofstream ofile;
+        ofile.open("ascii_gray.pgm");
         ofile << "P2\n"
               << width << " " << height << "\n255\n";
         cout << "height=" << height << endl;
@@ -168,13 +177,20 @@ Mat read_text_file(const char *file_name, const int width)
         int jmin = 399;
         int jmax = 399;
         // for (auto it = elevations.begin(); it != elevations.end(); ++it)
-        for (int k = 0; k < coords.size(); k += 2)
+        cout << coords.size() << endl;
+        // int k = 0;
+        // k < coords.size();
+        // k += 2;
+
+        for (auto it = elevations.begin(); it != elevations.end(); ++it)
         {
             // cout << "x=" << it->first.first << " y=" << it->first.second << endl;
-            // float elevation = it->second;
-            int x = coords[k];
-            int y = coords[k + 1];
-            float elevation = elevations[make_pair(x, y)];
+            // int x = coords[k];
+            // int y = coords[k + 1];
+            int x = it->first.first;
+            int y = it->first.second;
+            // float elevation = elevations[make_pair(x, y)];
+            float elevation = it->second;
             float rescaled_elevation = 0;
             if (elevation != 0)
                 rescaled_elevation = (elevation - min_elevation) / (max_elevation - min_elevation); //elevation normalization
@@ -195,10 +211,12 @@ Mat read_text_file(const char *file_name, const int width)
                     imax = i;
             }
             int intensity = (int)(255 * rescaled_elevation);
+            // pixels.insert(make_pair(make_pair(i, j), intensity));
             pixels[make_pair(i, j)] = intensity;
             cout << "x=" << x << " y=" << y << " j=" << j << " i=" << i << " z=" << elevation << " r_z=" << rescaled_elevation << endl;
         }
         cout << "imin = " << imin << " imax = " << imax << " jmin = " << jmin << " jmax = " << jmax << endl;
+
         int cpt = 1;
         for (auto it = pixels.begin(); it != pixels.end(); ++it)
         {
