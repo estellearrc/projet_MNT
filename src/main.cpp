@@ -54,6 +54,7 @@ using namespace std;
 Mat read_text_file(const char *file_name, const int width)
 {
     map<pair<float, float>, float> elevations;
+    map<pair<int, int>, float> pixels;
     vector<double> coords;
     Mat image_dest;
     ifstream in_file(file_name);
@@ -73,11 +74,12 @@ Mat read_text_file(const char *file_name, const int width)
         P = P_for_GIS;
         PJ_COORD coord_wgs84, coord_lambert93;
         float longitude, latitude, elevation;
+        float x, y;
         int nb_lines = 0;
         int nb_columns = 0;
         float min_elevation, max_elevation;
-        float min_lat, max_lat;
-        float min_long, max_long;
+        float xmin, xmax;
+        float ymin, ymax;
         bool first_data = true;
         while (!in_file.eof())
         {
@@ -85,21 +87,22 @@ Mat read_text_file(const char *file_name, const int width)
             coord_wgs84 = proj_coord(longitude, latitude, elevation, 0);
             coord_lambert93 = proj_trans(P, PJ_FWD, coord_wgs84);
             // printf("easting: %.3f, northing: %.3f , elevation: %g\n", coord_lambert93.enu.e, coord_lambert93.enu.n, coord_lambert93.lpz.z);
+            x = coord_lambert93.enu.e;
+            y = coord_lambert93.enu.n;
             // coord_lambert93 = proj_trans(P, PJ_INV, coord_lambert93);
             // printf("longitude: %g, latitude: %g, elevation: %g\n", coord_lambert93.lpz.lam, coord_lambert93.lpz.phi, coord_lambert93.lpz.z);
-            coords.push_back(longitude);
-            coords.push_back(latitude);
-            elevations[make_pair(longitude, latitude)] = elevation;
+            coords.push_back(x);
+            coords.push_back(y);
+            elevations[make_pair(x, y)] = elevation;
             //update elevation range
             if (first_data)
             {
                 min_elevation = elevation;
                 max_elevation = elevation;
-                min_lat = latitude;
-                max_lat = latitude;
-                min_long = longitude;
-                max_long = longitude;
-
+                xmin = x;
+                xmax = x;
+                ymin = y;
+                ymax = y;
                 first_data = false;
             }
             else
@@ -111,79 +114,103 @@ Mat read_text_file(const char *file_name, const int width)
                     if (elevation > max_elevation)
                         max_elevation = elevation;
                 }
-                if (latitude < min_lat)
-                    min_lat = latitude;
+                if (x < xmin)
+                    xmin = x;
                 else
                 {
-                    if (latitude > max_lat)
-                        max_lat = latitude;
+                    if (x > xmax)
+                        xmax = x;
                 }
-                if (longitude < min_long)
-                    min_long = longitude;
+                if (y < ymin)
+                    ymin = y;
                 else
                 {
-                    if (longitude > max_long)
-                        max_long = longitude;
+                    if (y > ymax)
+                        ymax = y;
                 }
-            }
-            // cout << nb_lines << " " << nb_columns << endl;
-            // elevations[nb_lines][nb_columns % width] = elevation;
-            //update indexes for image size
-            nb_columns++;
-            if (nb_columns % width == 0)
-            {
-                nb_lines++;
-                nb_columns = 0;
             }
         }
         proj_destroy(P);
         in_file.close();
 
+        //triangulation happens here
+        delaunator::Delaunator d(coords);
+        cout << "nb triangles found = " << d.triangles.size() << endl;
+        for (std::size_t i = 0; i < d.triangles.size(); i += 3)
+        {
+            // printf(
+            //     "Triangle points: [[%f, %f], [%f, %f], [%f, %f]]\n",
+            //     d.coords[2 * d.triangles[i]],         //tx0
+            //     d.coords[2 * d.triangles[i] + 1],     //ty0
+            //     d.coords[2 * d.triangles[i + 1]],     //tx1
+            //     d.coords[2 * d.triangles[i + 1] + 1], //ty1
+            //     d.coords[2 * d.triangles[i + 2]],     //tx2
+            //     d.coords[2 * d.triangles[i + 2] + 1]  //ty2
+            // );
+            float x0 = d.coords[2 * d.triangles[i]];
+            float y0 = d.coords[2 * d.triangles[i] + 1];
+            float x1 = d.coords[2 * d.triangles[i + 1]];
+            float y1 = d.coords[2 * d.triangles[i + 1] + 1];
+            float x2 = d.coords[2 * d.triangles[i + 2]];
+            float y2 = d.coords[2 * d.triangles[i + 2] + 1];
+        }
+
         ofstream ofile;
         ofile.open("ascii_gray.pgm");
-        cout << abs(max_lat - min_lat) << endl;
-        cout << abs(max_long - min_long) << endl;
-        int height = (int)(abs(max_lat - min_lat) * width / abs(max_long - min_long));
+        cout << "xmin =" << xmin << " xmax=" << xmax << " ymin=" << ymin << " ymax=" << ymax << endl;
+        int height = (int)(abs(xmax - xmin) * width / abs(ymax - ymin));
         ofile << "P2\n"
-              << width << " " << height << "\n120\n";
-
+              << width << " " << height << "\n255\n";
         cout << "height=" << height << endl;
-        int cpt = 1;
-        for (auto it = elevations.begin(); it != elevations.end(); ++it)
+
+        int imin = 424;
+        int imax = 424;
+        int jmin = 399;
+        int jmax = 399;
+        // for (auto it = elevations.begin(); it != elevations.end(); ++it)
+        for (int k = 0; k < coords.size(); k += 2)
         {
-            ofile << (int)abs(it->second) << " ";
+            // cout << "x=" << it->first.first << " y=" << it->first.second << endl;
+            // float elevation = it->second;
+            int x = coords[k];
+            int y = coords[k + 1];
+            float elevation = elevations[make_pair(x, y)];
+            float rescaled_elevation = 0;
+            if (elevation != 0)
+                rescaled_elevation = (elevation - min_elevation) / (max_elevation - min_elevation); //elevation normalization
+            int j = (int)((x - xmin) * (width - 1) / (xmax - xmin));
+            int i = (int)((y - ymin) * (height - 1) / (ymax - ymin));
+            if (j < jmin)
+                jmin = j;
+            else
+            {
+                if (j > jmax)
+                    jmax = j;
+            }
+            if (i < imin)
+                imin = i;
+            else
+            {
+                if (i > imax)
+                    imax = i;
+            }
+            int intensity = (int)(255 * rescaled_elevation);
+            pixels[make_pair(i, j)] = intensity;
+            cout << "x=" << x << " y=" << y << " j=" << j << " i=" << i << " z=" << elevation << " r_z=" << rescaled_elevation << endl;
+        }
+        cout << "imin = " << imin << " imax = " << imax << " jmin = " << jmin << " jmax = " << jmax << endl;
+        int cpt = 1;
+        for (auto it = pixels.begin(); it != pixels.end(); ++it)
+        {
+            cout << "i=" << it->first.first << " j=" << it->first.second << endl;
+            int intensity = it->second;
+            ofile << intensity << " ";
             if (cpt % 15 == 0)
                 ofile << "\n";
             cpt++;
         }
+
         ofile.close();
-        // cout << nb_lines << " " << nb_columns << endl;
-        // cout << min_elevation << " " << max_elevation << endl;
-        // image_dest = Mat(nb_lines + 1, width, CV_8UC1);
-        // for (int i = 0; i < nb_lines; i++)
-        // {
-        //     for (int j = 0; j < nb_columns; j++)
-        //     {
-        //         float rescaled_elevation = (elevations[i][j] - min_elevation) / (max_elevation - min_elevation); //elevation normalization
-        //         // cout << rescaled_elevation << endl;
-        //         image_dest.ptr<uchar>(i)[j] = (int)(255 * rescaled_elevation);
-        //     }
-        // }
-        //triangulation happens here
-        delaunator::Delaunator d(coords);
-        cout << "nb triangles found = " << d.triangles.size() << endl;
-        // for (std::size_t i = 0; i < d.triangles.size(); i += 3)
-        // {
-        //     printf(
-        //         "Triangle points: [[%f, %f], [%f, %f], [%f, %f]]\n",
-        //         d.coords[2 * d.triangles[i]],         //tx0
-        //         d.coords[2 * d.triangles[i] + 1],     //ty0
-        //         d.coords[2 * d.triangles[i + 1]],     //tx1
-        //         d.coords[2 * d.triangles[i + 1] + 1], //ty1
-        //         d.coords[2 * d.triangles[i + 2]],     //tx2
-        //         d.coords[2 * d.triangles[i + 2] + 1]  //ty2
-        //     );
-        // }
     }
     return image_dest;
 }
