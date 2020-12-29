@@ -163,7 +163,7 @@ Mat read_text_file(const char *file_name, const int width)
         {
             for (int j = 0; j < width; j++)
             {
-                pixels[make_pair(i, j)] = 0;
+                pixels[make_pair(-i, j)] = 0;
             }
         }
         ofstream ofile;
@@ -212,7 +212,7 @@ Mat read_text_file(const char *file_name, const int width)
             }
             int intensity = (int)(255 * rescaled_elevation);
             // pixels.insert(make_pair(make_pair(i, j), intensity));
-            pixels[make_pair(i, j)] = intensity;
+            pixels[make_pair(-i, j)] = intensity;
             cout << "x=" << x << " y=" << y << " j=" << j << " i=" << i << " z=" << elevation << " r_z=" << rescaled_elevation << endl;
         }
         cout << "imin = " << imin << " imax = " << imax << " jmin = " << jmin << " jmax = " << jmax << endl;
