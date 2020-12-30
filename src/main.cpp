@@ -3,13 +3,13 @@
 #include <fstream>
 #include <string>
 #include <proj.h>
-#include <opencv2/opencv.hpp>
+// #include <opencv2/opencv.hpp>
 #include "delaunator.hpp"
 #include <cstdio>
 #include <vector>
 #include <map>
 
-using namespace cv;
+// using namespace cv;
 using namespace std;
 
 // void writePGM(const Image &image, std::string fname)
@@ -51,12 +51,11 @@ using namespace std;
 //         );
 //     }
 
-Mat read_text_file(const char *file_name, const int width)
+void read_text_file(const char *file_name, const int width)
 {
     map<pair<float, float>, float> elevations;
     map<pair<int, int>, int> pixels;
     vector<double> coords;
-    Mat image_dest;
     ifstream in_file(file_name);
     // int nb_data = 1048576;
 
@@ -172,10 +171,10 @@ Mat read_text_file(const char *file_name, const int width)
               << width << " " << height << "\n255\n";
         cout << "height=" << height << endl;
 
-        int imin = 424;
-        int imax = 424;
-        int jmin = 399;
-        int jmax = 399;
+        int imin = (int)height / 2;
+        int imax = (int)height / 2;
+        int jmin = (int)width / 2;
+        int jmax = (int)width / 2;
         // for (auto it = elevations.begin(); it != elevations.end(); ++it)
         cout << coords.size() << endl;
         // int k = 0;
@@ -230,14 +229,12 @@ Mat read_text_file(const char *file_name, const int width)
 
         ofile.close();
     }
-    return image_dest;
 }
 
 void process(const char *file_name, const int width)
 {
     //../doc/Guerledan_Feb19_50cm_wgs84.txt
-    Mat image = read_text_file(file_name, width);
-    // imwrite(imdname, image);
+    read_text_file(file_name, width);
 }
 
 void usage(const char *s)
