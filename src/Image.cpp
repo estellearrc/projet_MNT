@@ -1,5 +1,4 @@
 #include "Image.h"
-#include "formatter.h"
 
 using namespace std;
 
@@ -22,6 +21,23 @@ Image::Image(const int width, const float xmin, const float xmax, const float ym
         }
     }
 }
+const int Image::get_width() const
+{
+    return m_width;
+}
+const int Image::get_height() const
+{
+    return m_height;
+}
+Pixel *Image::get_pixel(int i, int j)
+{
+    // return &m_pixels.at(make_pair(-i, j));
+    return &m_pixels[make_pair(-i, j)];
+}
+const map<pair<int, int>, Pixel> *Image::get_pixels() const
+{
+    return &m_pixels;
+}
 void Image::determine_magic_number()
 {
     if (m_gray) //PGM file
@@ -39,4 +55,3 @@ void Image::determine_magic_number()
             m_magic_number = 3;
     }
 }
-void Image::write() {}

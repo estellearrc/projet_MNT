@@ -4,10 +4,11 @@
 #include <string>
 #include <proj.h>
 // #include <opencv2/opencv.hpp>
-#include "delaunator.hpp"
+// #include "delaunator.hpp"
 #include <cstdio>
 #include <vector>
 #include <map>
+#include "utils.h"
 
 // using namespace cv;
 using namespace std;
@@ -56,6 +57,10 @@ void read_text_file(const char *file_name, const int width)
     map<pair<float, float>, float> elevations;
     map<pair<int, int>, int> pixels;
     vector<double> coords;
+    float min_elevation, max_elevation;
+    float xmin, xmax;
+    float ymin, ymax;
+    int imin, imax, jmin, jmax;
     ifstream in_file(file_name);
     // int nb_data = 1048576;
 
@@ -74,11 +79,6 @@ void read_text_file(const char *file_name, const int width)
         PJ_COORD coord_wgs84, coord_lambert93;
         float longitude, latitude, elevation;
         float x, y;
-        int nb_lines = 0;
-        int nb_columns = 0;
-        float min_elevation, max_elevation;
-        float xmin, xmax;
-        float ymin, ymax;
         bool first_data = true;
         while (!in_file.eof())
         {
@@ -135,26 +135,26 @@ void read_text_file(const char *file_name, const int width)
         in_file.close();
 
         //triangulation happens here
-        delaunator::Delaunator d(coords);
-        cout << "nb triangles found = " << d.triangles.size() << endl;
-        for (std::size_t i = 0; i < d.triangles.size(); i += 3)
-        {
-            // printf(
-            //     "Triangle points: [[%f, %f], [%f, %f], [%f, %f]]\n",
-            //     d.coords[2 * d.triangles[i]],         //tx0
-            //     d.coords[2 * d.triangles[i] + 1],     //ty0
-            //     d.coords[2 * d.triangles[i + 1]],     //tx1
-            //     d.coords[2 * d.triangles[i + 1] + 1], //ty1
-            //     d.coords[2 * d.triangles[i + 2]],     //tx2
-            //     d.coords[2 * d.triangles[i + 2] + 1]  //ty2
-            // );
-            float x0 = d.coords[2 * d.triangles[i]];
-            float y0 = d.coords[2 * d.triangles[i] + 1];
-            float x1 = d.coords[2 * d.triangles[i + 1]];
-            float y1 = d.coords[2 * d.triangles[i + 1] + 1];
-            float x2 = d.coords[2 * d.triangles[i + 2]];
-            float y2 = d.coords[2 * d.triangles[i + 2] + 1];
-        }
+        // delaunator::Delaunator d(coords);
+        // cout << "nb triangles found = " << d.triangles.size() << endl;
+        // for (std::size_t i = 0; i < d.triangles.size(); i += 3)
+        // {
+        //     // printf(
+        //     //     "Triangle points: [[%f, %f], [%f, %f], [%f, %f]]\n",
+        //     //     d.coords[2 * d.triangles[i]],         //tx0
+        //     //     d.coords[2 * d.triangles[i] + 1],     //ty0
+        //     //     d.coords[2 * d.triangles[i + 1]],     //tx1
+        //     //     d.coords[2 * d.triangles[i + 1] + 1], //ty1
+        //     //     d.coords[2 * d.triangles[i + 2]],     //tx2
+        //     //     d.coords[2 * d.triangles[i + 2] + 1]  //ty2
+        //     // );
+        //     float x0 = d.coords[2 * d.triangles[i]];
+        //     float y0 = d.coords[2 * d.triangles[i] + 1];
+        //     float x1 = d.coords[2 * d.triangles[i + 1]];
+        //     float y1 = d.coords[2 * d.triangles[i + 1] + 1];
+        //     float x2 = d.coords[2 * d.triangles[i + 2]];
+        //     float y2 = d.coords[2 * d.triangles[i + 2] + 1];
+        // }
 
         cout << "xmin =" << xmin << " xmax=" << xmax << " ymin=" << ymin << " ymax=" << ymax << endl;
         int height = (int)(abs(xmax - xmin) * width / abs(ymax - ymin));
@@ -171,10 +171,10 @@ void read_text_file(const char *file_name, const int width)
               << width << " " << height << "\n255\n";
         cout << "height=" << height << endl;
 
-        int imin = (int)height / 2;
-        int imax = (int)height / 2;
-        int jmin = (int)width / 2;
-        int jmax = (int)width / 2;
+        imin = (int)height / 2;
+        imax = (int)height / 2;
+        jmin = (int)width / 2;
+        jmax = (int)width / 2;
         // for (auto it = elevations.begin(); it != elevations.end(); ++it)
         cout << coords.size() << endl;
         // int k = 0;
@@ -231,15 +231,24 @@ void read_text_file(const char *file_name, const int width)
     }
 }
 
-void process(const char *file_name, const int width)
+void process(const char *file_path, const int image_width)
 {
     //../doc/Guerledan_Feb19_50cm_wgs84.txt
-    read_text_file(file_name, width);
+    // read_text_file(file_path, image_width);
+    map<pair<float, float>, float> elevations;
+    vector<double> coords;
+    float min_elevation, max_elevation;
+    float xmin, xmax;
+    float ymin, ymax;
+    read_data_file(file_path, elevations, coords, min_elevation, max_elevation, xmin, xmax, ymin, ymax);
+    Image image = Image(image_width, xmin, xmax, ymin, ymax, true, false);
+    convert_raw_data_to_pixels(elevations, image, min_elevation, max_elevation, xmin, xmax, ymin, ymax);
+    write_image_file(image, "bonjour");
 }
 
 void usage(const char *s)
 {
-    std::cerr << "Usage: " << s << " file_name width\n"
+    std::cerr << "Usage: " << s << " file_path image_width\n"
               << std::endl;
     exit(EXIT_FAILURE);
 }

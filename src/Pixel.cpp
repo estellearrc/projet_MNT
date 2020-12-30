@@ -13,15 +13,15 @@ Pixel::Pixel()
 {
     Pixel(0);
 }
-const int Pixel::get_R()
+const int Pixel::get_R() const
 {
     return m_R;
 }
-const int Pixel::get_G()
+const int Pixel::get_G() const
 {
     return m_G;
 }
-const int Pixel::get_B()
+const int Pixel::get_B() const
 {
     return m_B;
 }

@@ -2,17 +2,19 @@
 #define __IMAGE_H__
 
 #include <cstdlib>
-#include <fstream>
 #include <map>
 #include "Pixel.h"
 
 class Image
 {
 public:
-    Image(const int width, const float xmin, const float xmax, const float ymin, const float ymax, bool gray = true, bool binary = false);
+    Image(const int width, const float xmin, const float xmax, const float ymin, const float ymax, bool gray, bool binary);
     // ~Image();
     void determine_magic_number();
-    void write();
+    const int get_width() const;
+    const int get_height() const;
+    Pixel *get_pixel(int i, int j);
+    const std::map<std::pair<int, int>, Pixel> *get_pixels() const;
 
 private:
     int m_magic_number;
