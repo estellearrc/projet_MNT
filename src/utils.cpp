@@ -1,9 +1,10 @@
 
 #include "utils.h"
+#include "delaunator.hpp"
 
 using namespace std;
 
-void read_data_file(const char *file_path, float &min_elevation, float &max_elevation, float &xmin, float &xmax, float &ymin, float &ymax, map<pair<float, float>, float> &elevations, vector<double> &coords)
+void read_data_file(const char *file_path, map<pair<float, float>, float> &elevations, vector<double> &coords, float &min_elevation, float &max_elevation, float &xmin, float &xmax, float &ymin, float &ymax)
 {
     ifstream in_file(file_path);
     // int nb_data = 1048576;
