@@ -13,6 +13,8 @@ public:
     void determine_magic_number();
     const int get_width() const;
     const int get_height() const;
+    int get_magic_number() const;
+    bool is_gray() const;
     Pixel *get_pixel(int i, int j);
     const std::map<std::pair<int, int>, Pixel> *get_pixels() const;
 
@@ -20,8 +22,8 @@ private:
     int m_magic_number;
     bool m_gray;
     bool m_binary;
-    int m_width, m_height;
-    float m_xmin, m_xmax, m_ymin, m_ymax;
+    const int m_width, m_height;
+    const float m_xmin, m_xmax, m_ymin, m_ymax;
     std::map<std::pair<int, int>, Pixel> m_pixels;
 };
 

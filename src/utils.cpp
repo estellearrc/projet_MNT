@@ -82,8 +82,8 @@ void read_data_file(const char *file_path, map<pair<float, float>, float> &eleva
 }
 void convert_raw_data_to_pixels(const std::map<std::pair<float, float>, float> &elevations, Image &image, const float min_elevation, const float max_elevation, const float xmin, const float xmax, const float ymin, const float ymax)
 {
-    int height = image.get_height();
-    int width = image.get_width();
+    const int height = image.get_height();
+    const int width = image.get_width();
 
     for (auto it = elevations.begin(); it != elevations.end(); ++it)
     {
@@ -94,29 +94,66 @@ void convert_raw_data_to_pixels(const std::map<std::pair<float, float>, float> &
         //compute corresponding picture indexes
         int j = (int)((x - xmin) * (width - 1) / (xmax - xmin));
         int i = (int)((y - ymin) * (height - 1) / (ymax - ymin));
-        //set pixel's intensity
         Pixel *p = image.get_pixel(i, j);
-        p->set_gray_intensity(elevation, min_elevation, max_elevation);
+        //set pixel's intensity
+        if (image.is_gray())
+            p->set_gray_intensity(elevation, min_elevation, max_elevation);
+        else
+            p->set_RGB(elevation, min_elevation, max_elevation);
+        //set pixel's theoretical projected position
+        p->set_x_y(i, j, width, height, xmin, xmax, ymin, ymax);
     }
 }
-void write_image_file(const Image &image, string file_name)
+void write_image_file(const Image &image, const string file_name)
 {
-    int height = image.get_height();
-    int width = image.get_width();
+    const int height = image.get_height();
+    const int width = image.get_width();
+    const int magic_number = image.get_magic_number();
+    string file_extension;
+    int max_pixel_nb = 70; //theoretical maximal number of characters per line is 70
+    //determine right image extension
+    if (image.is_gray())
+        file_extension = ".pgm";
+    else
+        file_extension = ".ppm";
+    //determine maximal number of object Pixel per line
+    switch (magic_number)
+    {
+    case 5:
+        max_pixel_nb = 7;
+        break;
+    case 2:
+        max_pixel_nb = 17;
+    case 6:
+        max_pixel_nb = 2;
+        break;
+    case 3:
+        max_pixel_nb = 5;
+        break;
+    }
     ofstream ofile;
-    ofile.open("ascii_gray_refactor.pgm");
-    ofile << "P2\n"
+    ofile.open(file_name + file_extension);
+    ofile << "P" << magic_number << "\n"
           << width << " " << height << "\n255\n";
-    cout << "height=" << height << endl;
     int cpt = 1;
     const map<pair<int, int>, Pixel> *pixels = image.get_pixels();
     for (auto it = (*pixels).begin(); it != (*pixels).end(); ++it)
     {
-        cout << "i=" << it->first.first << " j=" << it->first.second << endl;
-        int intensity = it->second.get_R();
-        ofile << intensity << " ";
-        if (cpt % 15 == 0)
-            ofile << "\n";
+        // cout << "i=" << it->first.first << " j=" << it->first.second << endl;
+        if (image.is_gray()) //image is in grayscale
+        {
+            const u_char intensity = (u_char)it->second.get_R(); //unsigned char on 8 bits from 0 to 255
+            ofile << intensity << " " << intensity << " " << intensity << " ";
+        }
+        else //image is in color
+        {
+            const u_char R = (u_char)it->second.get_R(); //unsigned char on 8 bits from 0 to 255
+            const u_char G = (u_char)it->second.get_R(); //unsigned char on 8 bits from 0 to 255
+            const u_char B = (u_char)it->second.get_R(); //unsigned char on 8 bits from 0 to 255
+            ofile << R << " " << G << " " << B << " ";
+        }
+        if (cpt % max_pixel_nb == 0)
+            ofile << "\n"; //line break
         cpt++;
     }
 

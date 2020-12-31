@@ -2,14 +2,14 @@
 
 using namespace std;
 
-Image::Image(const int width, const float xmin, const float xmax, const float ymin, const float ymax, bool gray = true, bool binary = false)
+Image::Image(const int width, const float xmin, const float xmax, const float ymin, const float ymax, bool gray = true, bool binary = false) : m_width(width), m_height((int)(abs(xmax - xmin) * width / abs(ymax - ymin))), m_xmin(xmin), m_xmax(xmax), m_ymin(ymin), m_ymax(ymax)
 {
-    m_width = width;
-    m_height = (int)(abs(xmax - xmin) * width / abs(ymax - ymin));
-    m_xmin = xmin;
-    m_xmax = xmax;
-    m_ymin = ymin;
-    m_ymax = ymax;
+    // m_width = width;
+    // m_height = (int)(abs(xmax - xmin) * width / abs(ymax - ymin));
+    // m_xmin = xmin;
+    // m_xmax = xmax;
+    // m_ymin = ymin;
+    // m_ymax = ymax;
     m_gray = gray;
     m_binary = binary;
     //init pixels
@@ -28,6 +28,14 @@ const int Image::get_width() const
 const int Image::get_height() const
 {
     return m_height;
+}
+int Image::get_magic_number() const
+{
+    return m_magic_number;
+}
+bool Image::is_gray() const
+{
+    return m_gray;
 }
 Pixel *Image::get_pixel(int i, int j)
 {
