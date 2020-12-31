@@ -2,6 +2,7 @@
 #define __PIXEL_H__
 
 #include <cstdlib>
+#include <iostream>
 #include <cmath>
 
 class Pixel

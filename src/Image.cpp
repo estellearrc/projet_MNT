@@ -12,6 +12,7 @@ Image::Image(const int width, const float xmin, const float xmax, const float ym
     // m_ymax = ymax;
     m_gray = gray;
     m_binary = binary;
+    determine_magic_number();
     //init pixels
     for (int i = 0; i < m_height; i++)
     {

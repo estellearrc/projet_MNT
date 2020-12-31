@@ -34,6 +34,7 @@ void Pixel::set_gray_intensity(float elevation, const float min_elevation, const
     m_R = intensity;
     m_G = intensity;
     m_B = intensity;
+    cout << "Pixel.cpp R=" << m_R << " G=" << m_G << " B=" << m_B << endl;
 }
 void Pixel::set_RGB(float elevation, const float min_elevation, const float max_elevation)
 {
@@ -50,7 +51,7 @@ void Pixel::set_RGB(float elevation, const float min_elevation, const float max_
 
     float normalized_elevation = 0;
     if (elevation != 0) //elevation normalization only for non-black pixels
-        normalized_elevation = (elevation - min_elevation) / (max_elevation - min_elevation);
+        normalized_elevation = 1 - (elevation - min_elevation) / (max_elevation - min_elevation);
     double a = (1 - normalized_elevation) / 0.25; //invert and group
     int x = (int)floor(a);                        //integer part
     int y = (int)floor(255 * (a - x));            //fractional part from 0 to 255
@@ -82,6 +83,7 @@ void Pixel::set_RGB(float elevation, const float min_elevation, const float max_
         m_B = 255;
         break;
     }
+    // cout << "Pixel.cpp R=" << m_R << " G=" << m_G << " B=" << m_B << endl;
 }
 void Pixel::set_x_y(int i, int j, const int width, const int height, const float xmin, const float xmax, const float ymin, const float ymax)
 {
