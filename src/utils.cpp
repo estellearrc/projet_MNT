@@ -127,7 +127,6 @@ void write_image_file(const Image &image, string file_name)
         break;
     }
     //file headers
-    cout << file_name + file_extension << endl;
     ofstream ofile;
     ofile.open(file_name + file_extension);
     ofile << "P" << magic_number << "\n"
