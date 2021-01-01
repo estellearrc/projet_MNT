@@ -7,11 +7,8 @@ using namespace std;
 void read_data_file(const char *file_path, map<pair<float, float>, float> &elevations, vector<double> &coords, float &min_elevation, float &max_elevation, float &xmin, float &xmax, float &ymin, float &ymax)
 {
     ifstream in_file(file_path);
-    // int nb_data = 1048576;
-
     if (!in_file.is_open())
         cout << "Impossible d'ouvrir le fichier en lecture" << endl;
-
     else
     {
         string s;

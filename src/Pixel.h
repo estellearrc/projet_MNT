@@ -8,7 +8,6 @@
 class Pixel
 {
 public:
-    // we suppose imin=0 and jmin=0
     Pixel(int R, int G, int B);
     Pixel();
     // ~Pixel();
