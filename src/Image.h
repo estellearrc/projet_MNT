@@ -15,6 +15,7 @@ public:
     const int get_height() const;
     int get_magic_number() const;
     bool is_gray() const;
+    bool is_binary() const;
     Pixel *get_pixel(int i, int j);
     const std::map<std::pair<int, int>, Pixel> *get_pixels() const;
 

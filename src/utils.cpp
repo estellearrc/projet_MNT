@@ -84,7 +84,6 @@ void convert_raw_data_to_pixels(const std::map<std::pair<float, float>, float> &
 {
     const int height = image.get_height();
     const int width = image.get_width();
-
     for (auto it = elevations.begin(); it != elevations.end(); ++it)
     {
         //retrieve field coordinates
@@ -104,67 +103,59 @@ void convert_raw_data_to_pixels(const std::map<std::pair<float, float>, float> &
         p->set_x_y(i, j, width, height, xmin, xmax, ymin, ymax);
     }
 }
+
 void write_image_file(const Image &image, string file_name)
 {
     const int height = image.get_height();
     const int width = image.get_width();
     const int magic_number = image.get_magic_number();
     string file_extension;
-    int max_pixel_nb = 70; //theoretical maximal number of characters per line is 70
-    //determine right image extension and maximal number of object Pixel per line
+    //determine right image extension
     switch (magic_number)
     {
     case 5:
-        // max_pixel_nb = 7;
-        max_pixel_nb = 3;
         file_extension = "_gray_bin.pgm";
         break;
     case 2:
-        // max_pixel_nb = 17;
-        max_pixel_nb = 8;
         file_extension = "_gray_ascii.pgm";
         break;
     case 6:
-        // max_pixel_nb = 2;
-        max_pixel_nb = 1;
         file_extension = "_color_bin.ppm";
         break;
     case 3:
-        // max_pixel_nb = 5;
-        max_pixel_nb = 2;
         file_extension = "_color_ascii.ppm";
         break;
     }
+    //file headers
     cout << file_name + file_extension << endl;
-    cout << magic_number << endl;
     ofstream ofile;
     ofile.open(file_name + file_extension);
     ofile << "P" << magic_number << "\n"
-          << width << " " << height << "\n255\n";
-    int cpt = 1;
+          << width << " " << height << "\n"
+          << 255 << "\n";
+
+    //write pixels' data
     const map<pair<int, int>, Pixel> *pixels = image.get_pixels();
     for (auto it = (*pixels).begin(); it != (*pixels).end(); ++it)
     {
-        // cout << "i=" << it->first.first << " j=" << it->first.second << endl;
         if (image.is_gray()) //image is in grayscale
         {
-            cout << "utils.cpp R=" << it->second.get_R() << " G=" << it->second.get_G() << " B=" << it->second.get_B() << endl;
-            uint16_t intensity = it->second.get_R(); //unsigned char on 8 bits from 0 to 255
-            ofile << intensity << " ";
+            int intensity = it->second.get_R();
+            if (image.is_binary())
+                ofile << (uint8_t)intensity; //unsigned int on 8 bits from 0 to 255
+            else
+                ofile << intensity << " ";
         }
         else //image is in color
         {
-            cout << "utils.cpp R=" << it->second.get_R() << " G=" << it->second.get_G() << " B=" << it->second.get_B() << endl;
-            uint16_t R = it->second.get_R(); //unsigned char on 8 bits from 0 to 255
-            uint16_t G = it->second.get_G(); //unsigned char on 8 bits from 0 to 255
-            uint16_t B = it->second.get_B(); //unsigned char on 8 bits from 0 to 255
-            if (R == 0 && G == 0)
-                B = 0;
-            ofile << " " << R << " " << G << " " << B << " ";
+            int R = it->second.get_R();
+            int G = it->second.get_G();
+            int B = it->second.get_B();
+            if (image.is_binary())
+                ofile << (uint8_t)R << (uint8_t)G << (uint8_t)B; //unsigned int on 8 bits from 0 to 255
+            else
+                ofile << " " << R << " " << G << " " << B << " ";
         }
-        if (cpt % max_pixel_nb == 0)
-            ofile << "\n"; //line break
-        cpt++;
     }
 
     ofile.close();

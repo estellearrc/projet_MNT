@@ -10,7 +10,6 @@ class Pixel
 public:
     // we suppose imin=0 and jmin=0
     Pixel(int R, int G, int B);
-    Pixel(int gray_intensity);
     Pixel();
     // ~Pixel();
     int get_R() const;

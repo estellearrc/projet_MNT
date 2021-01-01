@@ -7,9 +7,9 @@
 #include <string>
 #include <proj.h>
 #include <cstdio>
-// #include <stdint.h>
 #include <vector>
 #include <map>
+#include <bitset>
 #include "Image.h"
 
 void read_data_file(const char *file_path, std::map<std::pair<float, float>, float> &elevations, std::vector<double> &coords, float &min_elevation, float &max_elevation, float &xmin, float &xmax, float &ymin, float &ymax);

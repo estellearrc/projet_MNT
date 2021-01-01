@@ -5,13 +5,8 @@ using namespace std;
 Pixel::Pixel(int R, int G, int B) : m_R(R), m_G(G), m_B(B)
 {
 }
-Pixel::Pixel(int gray_intensity)
+Pixel::Pixel() : m_R(0), m_G(0), m_B(0)
 {
-    Pixel(gray_intensity, gray_intensity, gray_intensity);
-}
-Pixel::Pixel()
-{
-    Pixel(0);
 }
 int Pixel::get_R() const
 {
@@ -34,7 +29,6 @@ void Pixel::set_gray_intensity(float elevation, const float min_elevation, const
     m_R = intensity;
     m_G = intensity;
     m_B = intensity;
-    cout << "Pixel.cpp R=" << m_R << " G=" << m_G << " B=" << m_B << endl;
 }
 void Pixel::set_RGB(float elevation, const float min_elevation, const float max_elevation)
 {
@@ -83,7 +77,6 @@ void Pixel::set_RGB(float elevation, const float min_elevation, const float max_
         m_B = 255;
         break;
     }
-    // cout << "Pixel.cpp R=" << m_R << " G=" << m_G << " B=" << m_B << endl;
 }
 void Pixel::set_x_y(int i, int j, const int width, const int height, const float xmin, const float xmax, const float ymin, const float ymax)
 {
