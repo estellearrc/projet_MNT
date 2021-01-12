@@ -90,8 +90,7 @@ void convert_raw_data_to_pixels_delaunay(const map<pair<float, float>, float> &e
     const int height = image.get_height();
     const int width = image.get_width();
     delaunator::Delaunator d(coords); //Delaunay's triangulation
-    float dist_min = 99;
-    float x0, y0, x1, y1, x2, y2; //triangle's summits
+    float x0, y0, x1, y1, x2, y2;     //triangle's summits
     //look for the corresponding triangle
     for (int i = 0; i < height; i++)
     {
@@ -110,8 +109,12 @@ void convert_raw_data_to_pixels_delaunay(const map<pair<float, float>, float> &e
                 float ty1 = d.coords[2 * d.triangles[i + 1] + 1]; //ty1
                 float tx2 = d.coords[2 * d.triangles[i + 2]];     //tx2
                 float ty2 = d.coords[2 * d.triangles[i + 2] + 1]; //ty2
-                float dist_to_summits = dist(tx0, ty0, x, y) + dist(tx1, ty1, x, y) + dist(tx2, ty2, x, y);
-                if (dist_to_summits < dist_min)
+                float alpha = ((ty1 - ty2) * (x - tx2) + (tx2 - tx1) * (y - ty2)) /
+                              ((ty1 - ty2) * (tx0 - tx2) + (tx2 - tx1) * (ty0 - ty2));
+                float beta = ((ty2 - ty0) * (x - tx2) + (tx0 - tx2) * (y - ty2)) /
+                             ((ty1 - ty2) * (tx0 - tx2) + (tx2 - tx1) * (ty0 - ty2));
+                float gamma = 1.0f - alpha - beta;
+                if (alpha >= 0 && beta >= 0 && alpha <= 1 && beta <= 1)
                 {
                     x0 = tx0;
                     y0 = ty0;
@@ -119,7 +122,19 @@ void convert_raw_data_to_pixels_delaunay(const map<pair<float, float>, float> &e
                     y1 = ty1;
                     x2 = tx2;
                     y2 = ty2;
-                    dist_min = dist_to_summits;
+                    auto it0 = elevations.find(make_pair(tx0, ty0));
+                    float elev_0 = it0->second;
+                    auto it1 = elevations.find(make_pair(tx1, ty1));
+                    float elev_1 = it1->second;
+                    auto it2 = elevations.find(make_pair(tx2, ty2));
+                    float elev_2 = it2->second;
+                    //interpolate triangle summits' elevations
+                    float elevation = alpha * elev_0 + beta * elev_1 + gamma * elev_2;
+                    //set pixel's intensity
+                    if (image.is_gray())
+                        p->set_gray_intensity(elevation, min_elevation, max_elevation);
+                    else
+                        p->set_RGB(elevation, min_elevation, max_elevation);
                 }
             }
         }
@@ -151,7 +166,7 @@ void convert_raw_data_to_pixels(const map<pair<float, float>, float> &elevations
             p->set_RGB(elevation, min_elevation, max_elevation);
         //set pixel's theoretical projected position
         // p->set_x_y(i, j, width, height, xmin, xmax, ymin, ymax);
-        printf("xth = %f y = %f", p->get_x(), p->get_y());
+        // printf("xth = %f y = %f", p->get_x(), p->get_y());
     }
 }
 
