@@ -12,7 +12,7 @@ void process(const char *file_path, const int image_width)
     float ymin, ymax;
     read_data_file(file_path, elevations, coords, min_elevation, max_elevation, xmin, xmax, ymin, ymax);
     Image image = Image(image_width, xmin, xmax, ymin, ymax, true, false);
-    convert_raw_data_to_pixels(elevations, image, min_elevation, max_elevation, xmin, xmax, ymin, ymax);
+    convert_raw_data_to_pixels(elevations, coords, image, min_elevation, max_elevation, xmin, xmax, ymin, ymax);
     write_image_file(image, "test");
 }
 

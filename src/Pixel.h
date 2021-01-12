@@ -14,11 +14,11 @@ public:
     int get_R() const;
     int get_G() const;
     int get_B() const;
-    int get_x() const;
-    int get_y() const;
+    float get_x() const;
+    float get_y() const;
     void set_RGB(float elevation, const float min_elevation, const float max_elevation);
     void set_gray_intensity(float elevation, const float min_elevation, const float max_elevation);
-    void set_x_y(int i, int j, const int width, const int height, const float xmin, const float xmax, const float ymin, const float ymax);
+    void set_x_y(int i, int j, const int img_width, const int img_height, const float xmin, const float xmax, const float ymin, const float ymax);
 
 private:
     float m_x = 0, m_y = 0; //theoretical x, y position of the projected point

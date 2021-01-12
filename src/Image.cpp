@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Image::Image(const int width, const float xmin, const float xmax, const float ymin, const float ymax, bool gray = true, bool binary = false) : m_width(width), m_height((int)(abs(xmax - xmin) * width / abs(ymax - ymin))), m_xmin(xmin), m_xmax(xmax), m_ymin(ymin), m_ymax(ymax)
+Image::Image(const int width, const float xmin, const float xmax, const float ymin, const float ymax, bool gray, bool binary) : m_width(width), m_height((int)(abs(xmax - xmin) * width / abs(ymax - ymin))), m_xmin(xmin), m_xmax(xmax), m_ymin(ymin), m_ymax(ymax)
 {
     m_gray = gray;
     m_binary = binary;
@@ -13,14 +13,15 @@ Image::Image(const int width, const float xmin, const float xmax, const float ym
         for (int j = 0; j < m_width; j++)
         {
             m_pixels[make_pair(-i, j)] = Pixel(0, 0, 0);
+            m_pixels[make_pair(-i, j)].set_x_y(i, j, m_width, m_height, xmin, xmax, ymin, ymax);
         }
     }
 }
-const int Image::get_width() const
+int Image::get_width() const
 {
     return m_width;
 }
-const int Image::get_height() const
+int Image::get_height() const
 {
     return m_height;
 }

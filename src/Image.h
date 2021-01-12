@@ -11,8 +11,8 @@ public:
     Image(const int width, const float xmin, const float xmax, const float ymin, const float ymax, bool gray, bool binary);
     // ~Image();
     void determine_magic_number();
-    const int get_width() const;
-    const int get_height() const;
+    int get_width() const;
+    int get_height() const;
     int get_magic_number() const;
     bool is_gray() const;
     bool is_binary() const;

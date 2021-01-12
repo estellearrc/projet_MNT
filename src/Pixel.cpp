@@ -20,6 +20,14 @@ int Pixel::get_B() const
 {
     return m_B;
 }
+float Pixel::get_x() const
+{
+    return m_x;
+}
+float Pixel::get_y() const
+{
+    return m_y;
+}
 void Pixel::set_gray_intensity(float elevation, const float min_elevation, const float max_elevation)
 {
     float normalized_elevation = 0;
@@ -78,9 +86,9 @@ void Pixel::set_RGB(float elevation, const float min_elevation, const float max_
         break;
     }
 }
-void Pixel::set_x_y(int i, int j, const int width, const int height, const float xmin, const float xmax, const float ymin, const float ymax)
+void Pixel::set_x_y(int i, int j, const int img_width, const int img_height, const float xmin, const float xmax, const float ymin, const float ymax)
 {
     // compute theoretical projected position of the pixel on the field (interpolation is needed next)
-    m_x = xmin + (j + 1) * (xmax - xmin) / width;
-    m_y = ymin + (i + 1) * (ymax - ymin) / height;
+    m_x = xmin + j * float(xmax - xmin) / (img_width - 1);
+    m_y = ymin + i * float(ymax - ymin) / (img_height - 1);
 }
