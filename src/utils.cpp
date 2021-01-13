@@ -4,8 +4,12 @@
 
 using namespace std;
 
-void read_data_file(const char *file_path, map<pair<float, float>, float> &elevations, vector<double> &coords, float &min_elevation, float &max_elevation, float &xmin, float &xmax, float &ymin, float &ymax)
+MNT read_data(const char *file_path, std::vector<double> &coords, const int image_width, bool triangulation, bool is_gray, bool is_binary)
 {
+    map<pair<float, float>, float> elevations;
+    float min_elevation, max_elevation;
+    float xmin, xmax;
+    float ymin, ymax;
     ifstream in_file(file_path);
     if (!in_file.is_open())
         cout << "Impossible d'ouvrir le fichier en lecture" << endl;
@@ -76,47 +80,54 @@ void read_data_file(const char *file_path, map<pair<float, float>, float> &eleva
         proj_destroy(P);
         in_file.close();
     }
+    //create raster
+    MNT raster;
+    raster.xmin = xmin;
+    raster.xmax = xmax;
+    raster.ymin = ymin;
+    raster.ymax = ymax;
+    raster.min_elevation = min_elevation;
+    raster.max_elevation = max_elevation;
+    raster.triangulation = triangulation;
+    raster.elevations = elevations;
+    raster.image = Image(image_width, xmin, xmax, ymin, ymax, is_gray, is_binary);
+    return raster;
 }
-
-float dist(const float ax, const float ay, const float bx, const float by)
+void associate_triangle_summits_to_pixels(MNT &raster, const vector<size_t> &triangles, const vector<double> &coords)
 {
-    const float dx = ax - bx;
-    const float dy = ay - by;
-    return sqrtf(dx * dx + dy * dy);
-}
-void convert_raw_data_to_pixels_delaunay(map<pair<float, float>, float> &elevations, vector<double> &coords, Image &image, const float min_elevation, const float max_elevation, const float xmin, const float xmax, const float ymin, const float ymax)
-{
-    const int height = image.get_height();
-    const int width = image.get_width();
+    const int height = raster.image.get_height();
+    const int width = raster.image.get_width();
     vector<pair<int, int>> pair_indexes;
-    delaunator::Delaunator d(coords); //Delaunay's triangulation
-    for (std::size_t k = 0; k < d.triangles.size(); k += 3)
+    for (std::size_t k = 0; k < triangles.size(); k += 3)
     {
         //triangle's summits
-        float x0 = d.coords[2 * d.triangles[k]];
-        float y0 = d.coords[2 * d.triangles[k] + 1];
-        float x1 = d.coords[2 * d.triangles[k + 1]];
-        float y1 = d.coords[2 * d.triangles[k + 1] + 1];
-        float x2 = d.coords[2 * d.triangles[k + 2]];
-        float y2 = d.coords[2 * d.triangles[k + 2] + 1];
+        float x0 = coords[2 * triangles[k]];
+        float y0 = coords[2 * triangles[k] + 1];
+        float x1 = coords[2 * triangles[k + 1]];
+        float y1 = coords[2 * triangles[k + 1] + 1];
+        float x2 = coords[2 * triangles[k + 2]];
+        float y2 = coords[2 * triangles[k + 2] + 1];
         //compute corresponding picture indexes
-        float j0f = (x0 - xmin) * (width - 1) / (xmax - xmin);
-        float i0f = (y0 - ymin) * (height - 1) / (ymax - ymin);
-        float j1f = (x1 - xmin) * (width - 1) / (xmax - xmin);
-        float i1f = (y1 - ymin) * (height - 1) / (ymax - ymin);
-        float j2f = (x2 - xmin) * (width - 1) / (xmax - xmin);
-        float i2f = (y2 - ymin) * (height - 1) / (ymax - ymin);
+        float j0f = (x0 - raster.xmin) * (width - 1) / (raster.xmax - raster.xmin);
+        float i0f = (y0 - raster.ymin) * (height - 1) / (raster.ymax - raster.ymin);
+        float j1f = (x1 - raster.xmin) * (width - 1) / (raster.xmax - raster.xmin);
+        float i1f = (y1 - raster.ymin) * (height - 1) / (raster.ymax - raster.ymin);
+        float j2f = (x2 - raster.xmin) * (width - 1) / (raster.xmax - raster.xmin);
+        float i2f = (y2 - raster.ymin) * (height - 1) / (raster.ymax - raster.ymin);
         int i0_floor = (int)floorf(i0f), i0_ceil = (int)ceilf(i0f), j0_floor = (int)floorf(j0f), j0_ceil = (int)ceilf(j0f);
         int i1_floor = (int)floorf(i1f), i1_ceil = (int)ceilf(i1f), j1_floor = (int)floorf(j1f), j1_ceil = (int)ceilf(j1f);
         int i2_floor = (int)floorf(i2f), i2_ceil = (int)ceilf(i2f), j2_floor = (int)floorf(j2f), j2_ceil = (int)ceilf(j2f);
+        //save possible pixels corresponding to triangle summit 0
         pair_indexes.push_back(make_pair(i0_floor, j0_floor));
         pair_indexes.push_back(make_pair(i0_floor, j0_ceil));
         pair_indexes.push_back(make_pair(i0_ceil, j0_floor));
         pair_indexes.push_back(make_pair(i0_ceil, j0_ceil));
+        //save possible pixels corresponding to triangle summit 1
         pair_indexes.push_back(make_pair(i1_floor, j1_floor));
         pair_indexes.push_back(make_pair(i1_floor, j1_ceil));
         pair_indexes.push_back(make_pair(i1_ceil, j1_floor));
         pair_indexes.push_back(make_pair(i1_ceil, j1_ceil));
+        //save possible pixels corresponding to triangle summit 2
         pair_indexes.push_back(make_pair(i2_floor, j2_floor));
         pair_indexes.push_back(make_pair(i2_floor, j2_ceil));
         pair_indexes.push_back(make_pair(i2_ceil, j2_floor));
@@ -128,21 +139,29 @@ void convert_raw_data_to_pixels_delaunay(map<pair<float, float>, float> &elevati
         //add triangles' indexes to pixels
         for (auto it = pair_indexes.begin(); it != pair_indexes.end(); ++it)
         {
-            image.get_pixel((*it).first, (*it).second)->add_triangle_index(k);
-            // printf("(i, j) = (%i, %i)\n", (*it).first, (*it).second);
+            raster.image.get_pixel((*it).first, (*it).second)->add_triangle_index(k);
         }
         //remove all elements in the vector
         pair_indexes.clear();
     }
+}
 
+void convert_data_to_pixels_delaunay(std::vector<double> &coords, MNT &raster)
+{
+    const int height = raster.image.get_height();
+    const int width = raster.image.get_width();
+    delaunator::Delaunator d(coords); //Delaunay's triangulation
+    associate_triangle_summits_to_pixels(raster, d.triangles, d.coords);
+
+    //for each pixel
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
         {
-            Pixel *p = image.get_pixel(i, j);
+            Pixel *p = raster.image.get_pixel(i, j);
             float x = p->get_x();
             float y = p->get_y();
-            //look for the corresponding triangle
+            //look for the corresponding triangle into the possible triangles for the pixel
             const vector<int> *triangles_indexes = p->get_triangles_indexes();
             for (auto it = (*triangles_indexes).begin(); it != (*triangles_indexes).end(); ++it)
             {
@@ -154,6 +173,7 @@ void convert_raw_data_to_pixels_delaunay(map<pair<float, float>, float> &elevati
                 float ty1 = d.coords[2 * d.triangles[k + 1] + 1];
                 float tx2 = d.coords[2 * d.triangles[k + 2]];
                 float ty2 = d.coords[2 * d.triangles[k + 2] + 1];
+                //barycenter coefficients
                 float alpha = ((ty1 - ty2) * (x - tx2) + (tx2 - tx1) * (y - ty2)) /
                               ((ty1 - ty2) * (tx0 - tx2) + (tx2 - tx1) * (ty0 - ty2));
                 float beta = ((ty2 - ty0) * (x - tx2) + (tx0 - tx2) * (y - ty2)) /
@@ -161,93 +181,46 @@ void convert_raw_data_to_pixels_delaunay(map<pair<float, float>, float> &elevati
                 float gamma = 1.0f - alpha - beta;
                 if (alpha >= 0 && beta >= 0 && alpha <= 1 && beta <= 1)
                 {
-                    // auto it0 = elevations.find(make_pair(tx0, ty0));
-                    // float elev_0 = it0->second;
-                    // auto it1 = elevations.find(make_pair(tx1, ty1));
-                    // float elev_1 = it1->second;
-                    // auto it2 = elevations.find(make_pair(tx2, ty2));
-                    // float elev_2 = it2->second;
-                    float elev_0 = elevations[make_pair(tx0, ty0)];
-                    float elev_1 = elevations[make_pair(tx1, ty1)];
-                    float elev_2 = elevations[make_pair(tx2, ty2)];
-                    // printf("elev_0 = %f elev_1 = %f elev_2 = %f \n", elev_0, elev_1, elev_2);
+                    //retrieve correpsonding elevations
+                    float elev_0 = raster.elevations[make_pair(tx0, ty0)];
+                    float elev_1 = raster.elevations[make_pair(tx1, ty1)];
+                    float elev_2 = raster.elevations[make_pair(tx2, ty2)];
                     //interpolate triangle summits' elevations
                     float elevation = alpha * elev_0 + beta * elev_1 + gamma * elev_2;
                     //set pixel's intensity
-                    if (image.is_gray())
-                        p->set_gray_intensity(elevation, min_elevation, max_elevation);
+                    if (raster.image.is_gray())
+                        p->set_gray_intensity(elevation, raster.min_elevation, raster.max_elevation);
                     else
-                        p->set_RGB(elevation, min_elevation, max_elevation);
+                        p->set_RGB(elevation, raster.min_elevation, raster.max_elevation);
                 }
             }
         }
     }
 }
 
-void find_triangle() //to do
+void convert_data_to_pixels(MNT &raster)
 {
-}
-
-void convert_raw_data_to_pixels(const map<pair<float, float>, float> &elevations, vector<double> &coords, Image &image, const float min_elevation, const float max_elevation, const float xmin, const float xmax, const float ymin, const float ymax)
-{
-    const int height = image.get_height();
-    const int width = image.get_width();
-    for (auto it = elevations.begin(); it != elevations.end(); ++it)
+    const int height = raster.image.get_height();
+    const int width = raster.image.get_width();
+    for (auto it = raster.elevations.begin(); it != raster.elevations.end(); ++it)
     {
         //retrieve field coordinates
         float x = it->first.first;
         float y = it->first.second;
         float elevation = it->second;
         //compute corresponding picture indexes
-        int j = (int)((x - xmin) * (width - 1) / (xmax - xmin));
-        int i = (int)((y - ymin) * (height - 1) / (ymax - ymin));
-        Pixel *p = image.get_pixel(i, j);
+        int j = (int)((x - raster.xmin) * (width - 1) / (raster.xmax - raster.xmin));
+        int i = (int)((y - raster.ymin) * (height - 1) / (raster.ymax - raster.ymin));
+        Pixel *p = raster.image.get_pixel(i, j);
         //set pixel's intensity
-        if (image.is_gray())
-            p->set_gray_intensity(elevation, min_elevation, max_elevation);
+        if (raster.image.is_gray())
+            p->set_gray_intensity(elevation, raster.min_elevation, raster.max_elevation);
         else
-            p->set_RGB(elevation, min_elevation, max_elevation);
-        //set pixel's theoretical projected position
-        // p->set_x_y(i, j, width, height, xmin, xmax, ymin, ymax);
-        // printf("xth = %f y = %f", p->get_x(), p->get_y());
+            p->set_RGB(elevation, raster.min_elevation, raster.max_elevation);
     }
 }
 
-void interpolate_pixel_intensity(const Image &image, vector<double> &coords, const float min_elevation, const float max_elevation, const float xmin, const float xmax, const float ymin, const float ymax)
-{
-    //triangulation happens here
-    delaunator::Delaunator d(coords);
-    // cout << "points (x,y) triangle = " << d.triangles.size() << " points (x,y) coords = " << coords.size() << endl;
-    // int start_index = d.hull_start;
-    // cout << "start index = " << start_index << endl;
-    cout << xmin << " " << ymin << endl;
-    cout << "First coordinates x=" << coords[0] << " y=" << coords[0 + 1] << endl;
-    cout << "First coordinates x=" << d.coords[0] << " y=" << d.coords[0 + 1] << endl;
-    cout << "First triangle x=" << d.triangles[0] << endl;
-    int i = 0;
-    printf(
-        "First triangle points: [[%f, %f], [%f, %f], [%f, %f]]\n",
-        d.coords[2 * d.triangles[i]],         //tx0
-        d.coords[2 * d.triangles[i] + 1],     //ty0
-        d.coords[2 * d.triangles[i + 1]],     //tx1
-        d.coords[2 * d.triangles[i + 1] + 1], //ty1
-        d.coords[2 * d.triangles[i + 2]],     //tx2
-        d.coords[2 * d.triangles[i + 2] + 1]  //ty2
-    );
-
-    for (std::size_t i = 0; i < d.triangles.size(); i += 3)
-    {
-        float x0, y0, x1, y1, x2, y2;              //triangle's summits
-        x0 = d.coords[2 * d.triangles[i]];         //tx0
-        y0 = d.coords[2 * d.triangles[i] + 1];     //ty0
-        x1 = d.coords[2 * d.triangles[i + 1]];     //tx1
-        y1 = d.coords[2 * d.triangles[i + 1] + 1]; //ty1
-        x2 = d.coords[2 * d.triangles[i + 2]];     //tx2
-        y2 = d.coords[2 * d.triangles[i + 2] + 1]; //ty2
-    }
-}
-
-void write_image_file(const Image &image, string file_name)
+void write_image(const Image &image, string file_name)
 {
     const int height = image.get_height();
     const int width = image.get_width();

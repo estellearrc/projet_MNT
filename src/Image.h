@@ -8,6 +8,7 @@
 class Image
 {
 public:
+    Image();
     Image(const int width, const float xmin, const float xmax, const float ymin, const float ymax, bool gray, bool binary);
     // ~Image();
     void determine_magic_number();
@@ -23,8 +24,7 @@ private:
     int m_magic_number;
     bool m_gray;
     bool m_binary;
-    const int m_width, m_height;
-    const float m_xmin, m_xmax, m_ymin, m_ymax;
+    int m_width, m_height;
     std::map<std::pair<int, int>, Pixel> m_pixels;
 };
 

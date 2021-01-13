@@ -12,9 +12,18 @@
 #include <bitset>
 #include "Image.h"
 
-void read_data_file(const char *file_path, std::map<std::pair<float, float>, float> &elevations, std::vector<double> &coords, float &min_elevation, float &max_elevation, float &xmin, float &xmax, float &ymin, float &ymax);
-void write_image_file(const Image &image, std::string file_name);
-void convert_raw_data_to_pixels(const std::map<std::pair<float, float>, float> &elevations, std::vector<double> &coords, Image &image, const float min_elevation, const float max_elevation, const float xmin, const float xmax, const float ymin, const float ymax);
-void convert_raw_data_to_pixels_delaunay(std::map<std::pair<float, float>, float> &elevations, std::vector<double> &coords, Image &image, const float min_elevation, const float max_elevation, const float xmin, const float xmax, const float ymin, const float ymax);
-void interpolate_pixel_intensity(const Image &image, std::vector<double> &coords, const float min_elevation, const float max_elevation, const float xmin, const float xmax, const float ymin, const float ymax);
+struct MNT
+{
+    float xmin = 0, xmax = 0, ymin = 0, ymax = 0, min_elevation = 0, max_elevation = 0;
+    bool triangulation = false;
+    std::map<std::pair<float, float>, float> elevations;
+    Image image;
+};
+
+MNT read_data(const char *file_path, std::vector<double> &coords, const int image_width, bool triangulation, bool is_gray, bool is_binary);
+void write_image(const Image &image, std::string file_name);
+void convert_data_to_pixels(MNT &raster);
+void convert_data_to_pixels_delaunay(std::vector<double> &coords, MNT &raster);
+void associate_triangle_summits_to_pixels(MNT &raster, const std::vector<size_t> &triangles, const std::vector<double> &coords);
+
 #endif

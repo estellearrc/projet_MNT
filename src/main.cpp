@@ -5,16 +5,18 @@ using namespace std;
 void process(const char *file_path, const int image_width)
 {
     //./create-raster ../doc/Guerledan_Feb19_50cm_wgs84.txt 800
-    map<pair<float, float>, float> elevations;
+
+    bool triangulation = true;
+    bool gray = false;
+    bool binary = true;
     vector<double> coords;
-    float min_elevation, max_elevation;
-    float xmin, xmax;
-    float ymin, ymax;
-    read_data_file(file_path, elevations, coords, min_elevation, max_elevation, xmin, xmax, ymin, ymax);
-    Image image = Image(image_width, xmin, xmax, ymin, ymax, true, false);
-    convert_raw_data_to_pixels_delaunay(elevations, coords, image, min_elevation, max_elevation, xmin, xmax, ymin, ymax);
-    // convert_raw_data_to_pixels(elevations, coords, image, min_elevation, max_elevation, xmin, xmax, ymin, ymax);
-    write_image_file(image, "test");
+    //create raster
+    MNT raster = read_data(file_path, coords, image_width, triangulation, gray, binary);
+    if (raster.triangulation) //with Delaunay's triangulation
+        convert_data_to_pixels_delaunay(coords, raster);
+    else //without Delaunay's triangulation
+        convert_data_to_pixels(raster);
+    write_image(raster.image, "test");
 }
 
 void usage(const char *s)

@@ -2,7 +2,11 @@
 
 using namespace std;
 
-Image::Image(const int width, const float xmin, const float xmax, const float ymin, const float ymax, bool gray, bool binary) : m_width(width), m_height((int)(abs(xmax - xmin) * width / abs(ymax - ymin))), m_xmin(xmin), m_xmax(xmax), m_ymin(ymin), m_ymax(ymax)
+Image::Image()
+{
+}
+
+Image::Image(const int width, const float xmin, const float xmax, const float ymin, const float ymax, bool gray, bool binary) : m_width(width), m_height((int)(abs(xmax - xmin) * width / abs(ymax - ymin)))
 {
     m_gray = gray;
     m_binary = binary;
@@ -12,7 +16,9 @@ Image::Image(const int width, const float xmin, const float xmax, const float ym
     {
         for (int j = 0; j < m_width; j++)
         {
+            //set pixel's RGB componenents to 0
             m_pixels[make_pair(-i, j)] = Pixel(0, 0, 0);
+            //set pixel's theoretical projected position
             m_pixels[make_pair(-i, j)].set_x_y(i, j, m_width, m_height, xmin, xmax, ymin, ymax);
         }
     }
