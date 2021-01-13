@@ -28,6 +28,16 @@ float Pixel::get_y() const
 {
     return m_y;
 }
+const vector<int> *Pixel::get_triangles_indexes() const
+{
+    return &m_triangles_indexes;
+}
+
+void Pixel::add_triangle_index(int index)
+{
+    m_triangles_indexes.push_back(index);
+}
+
 void Pixel::set_gray_intensity(float elevation, const float min_elevation, const float max_elevation)
 {
     float normalized_elevation = 0;
