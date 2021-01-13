@@ -1,6 +1,7 @@
 # projet_MNT
 
 Projet C++ de 2A filière ROB à l'ENSTA BRETAGNE de rendu de Modèle Numérique de Terrain (MNT).
+
 Sujet du projet : ```/doc/cpp_06_projet_carte.pdf```
 
 ## Pré-requis
@@ -18,6 +19,7 @@ Pour installer la bibliothèque proj, suivre les instructions au lien suivant : 
 ## Exécution
 
 Se placer à la racine du dossier.
+
 Lancer ```./build.sh``` dans un terminal.
 
 Si besoin, rendre le script build.sh exécutable avec la commande : 
@@ -27,6 +29,6 @@ chmod +x build.sh
 
 ## Sorties
 
-Documentation du code dans ```/doc/html/index.html``` à ouvrir avec un navigateur web.
-Génération des images de MNT dans le dossier ```/images```.
+* Documentation du code dans ```/doc/html/index.html``` à ouvrir avec un navigateur web.
+* Génération des images de MNT dans le dossier ```/images```.
 
