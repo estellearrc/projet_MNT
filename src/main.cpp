@@ -4,8 +4,6 @@ using namespace std;
 
 void process(const char *file_path, const int image_width)
 {
-    //./create-raster ../doc/Guerledan_Feb19_50cm_wgs84.txt 800
-
     bool triangulation = true;
     bool gray = false;
     bool binary = true;
@@ -16,7 +14,7 @@ void process(const char *file_path, const int image_width)
         convert_data_to_pixels_delaunay(coords, raster);
     else //without Delaunay's triangulation
         convert_data_to_pixels(raster);
-    write_image(raster.image, "test");
+    write_image(raster.image, "MNT");
 }
 
 void usage(const char *s)

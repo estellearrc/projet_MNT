@@ -244,7 +244,7 @@ void write_image(const Image &image, string file_name)
     }
     //file headers
     ofstream ofile;
-    ofile.open(file_name + file_extension);
+    ofile.open("../images/" + file_name + file_extension);
     ofile << "P" << magic_number << "\n"
           << width << " " << height << "\n"
           << 255 << "\n";
