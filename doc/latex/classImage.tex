@@ -1,0 +1,184 @@
+\hypertarget{classImage}{}\section{Image Class Reference}
+\label{classImage}\index{Image@{Image}}
+
+
+A class defining a custom image with some classic attributes \+:  
+
+
+
+
+{\ttfamily \#include $<$Image.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classImage_a58edd1c45b4faeb5f789b0d036d02313}\label{classImage_a58edd1c45b4faeb5f789b0d036d02313}} 
+\hyperlink{classImage_a58edd1c45b4faeb5f789b0d036d02313}{Image} ()
+\begin{DoxyCompactList}\small\item\em Default constructor \+: construct a new \hyperlink{classImage}{Image} object. \end{DoxyCompactList}\item 
+\hyperlink{classImage_a05264c84d006ceb2e4f4405561999c5f}{Image} (const int width, const float xmin, const float xmax, const float ymin, const float ymax, bool gray, bool binary)
+\begin{DoxyCompactList}\small\item\em Construct a new \hyperlink{classImage}{Image} object. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classImage_aacd6d371d5f6d56a0c4070b0fbfb1f03}\label{classImage_aacd6d371d5f6d56a0c4070b0fbfb1f03}} 
+void \hyperlink{classImage_aacd6d371d5f6d56a0c4070b0fbfb1f03}{determine\+\_\+magic\+\_\+number} ()
+\begin{DoxyCompactList}\small\item\em Determine the magic number to encode the image in the right format when writing it as a file. \end{DoxyCompactList}\item 
+int \hyperlink{classImage_a1642b1ab6e1c8d15c78a59557642c20f}{get\+\_\+width} () const
+\begin{DoxyCompactList}\small\item\em Get the image\textquotesingle{}s width in number of pixels. \end{DoxyCompactList}\item 
+int \hyperlink{classImage_a04c7d24c9473e327e15c560c8193b684}{get\+\_\+height} () const
+\begin{DoxyCompactList}\small\item\em Get the image\textquotesingle{}s height in number of pixels. \end{DoxyCompactList}\item 
+int \hyperlink{classImage_aa5d430b86cb564263b5fc09f0574daff}{get\+\_\+magic\+\_\+number} () const
+\begin{DoxyCompactList}\small\item\em Get the magic number. \end{DoxyCompactList}\item 
+bool \hyperlink{classImage_a312d5af7ef1f889ad1742b24638d86de}{is\+\_\+gray} () const
+\begin{DoxyCompactList}\small\item\em Check if the image is in grayscale. \end{DoxyCompactList}\item 
+bool \hyperlink{classImage_a0d6de27cb2fbdf03bcdd68c92f8dbf6a}{is\+\_\+binary} () const
+\begin{DoxyCompactList}\small\item\em Check if the image is to be encoded in binary. \end{DoxyCompactList}\item 
+\hyperlink{classPixel}{Pixel} $\ast$ \hyperlink{classImage_a7c7f88f027f4bfc564883fcf5a2e799b}{get\+\_\+pixel} (int i, int j)
+\begin{DoxyCompactList}\small\item\em Get the pixel object at position (i,j) \end{DoxyCompactList}\item 
+const std\+::map$<$ std\+::pair$<$ int, int $>$, \hyperlink{classPixel}{Pixel} $>$ $\ast$ \hyperlink{classImage_af1a715bc9351b3385bd0591dfe3ce464}{get\+\_\+pixels} () const
+\begin{DoxyCompactList}\small\item\em Get all the pixels of the image. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A class defining a custom image with some classic attributes \+: 
+
+
+\begin{DoxyItemize}
+\item width
+\item height
+\item grayscale or in color And some custom ones \+:
+\item the format of encoding (P\+GM A\+S\+C\+II, P\+GM binary, P\+PM A\+S\+C\+II, P\+PM binary) 
+\end{DoxyItemize}
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classImage_a05264c84d006ceb2e4f4405561999c5f}\label{classImage_a05264c84d006ceb2e4f4405561999c5f}} 
+\index{Image@{Image}!Image@{Image}}
+\index{Image@{Image}!Image@{Image}}
+\subsubsection{\texorpdfstring{Image()}{Image()}}
+{\footnotesize\ttfamily Image\+::\+Image (\begin{DoxyParamCaption}\item[{const int}]{width,  }\item[{const float}]{xmin,  }\item[{const float}]{xmax,  }\item[{const float}]{ymin,  }\item[{const float}]{ymax,  }\item[{bool}]{gray,  }\item[{bool}]{binary }\end{DoxyParamCaption})}
+
+
+
+Construct a new \hyperlink{classImage}{Image} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em width} & a constant integer chosen par the user \\
+\hline
+{\em xmin} & a constant float giving the minimal x coordinate on the sampled terrain \\
+\hline
+{\em xmax} & a constant float giving the maximal x coordinate on the sampled terrain \\
+\hline
+{\em ymin} & a constant float giving the minimal y coordinate on the sampled terrain \\
+\hline
+{\em ymax} & a constant float giving the maximal y coordinate on the sampled terrain \\
+\hline
+{\em gray} & a boolean. If true, the image is in grayscale ; in color otherwise \\
+\hline
+{\em binary} & a boolean. If true, the image is encoded in binary ; in A\+S\+C\+II otherwise \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classImage_a04c7d24c9473e327e15c560c8193b684}\label{classImage_a04c7d24c9473e327e15c560c8193b684}} 
+\index{Image@{Image}!get\+\_\+height@{get\+\_\+height}}
+\index{get\+\_\+height@{get\+\_\+height}!Image@{Image}}
+\subsubsection{\texorpdfstring{get\+\_\+height()}{get\_height()}}
+{\footnotesize\ttfamily int Image\+::get\+\_\+height (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the image\textquotesingle{}s height in number of pixels. 
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classImage_aa5d430b86cb564263b5fc09f0574daff}\label{classImage_aa5d430b86cb564263b5fc09f0574daff}} 
+\index{Image@{Image}!get\+\_\+magic\+\_\+number@{get\+\_\+magic\+\_\+number}}
+\index{get\+\_\+magic\+\_\+number@{get\+\_\+magic\+\_\+number}!Image@{Image}}
+\subsubsection{\texorpdfstring{get\+\_\+magic\+\_\+number()}{get\_magic\_number()}}
+{\footnotesize\ttfamily int Image\+::get\+\_\+magic\+\_\+number (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the magic number. 
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classImage_a7c7f88f027f4bfc564883fcf5a2e799b}\label{classImage_a7c7f88f027f4bfc564883fcf5a2e799b}} 
+\index{Image@{Image}!get\+\_\+pixel@{get\+\_\+pixel}}
+\index{get\+\_\+pixel@{get\+\_\+pixel}!Image@{Image}}
+\subsubsection{\texorpdfstring{get\+\_\+pixel()}{get\_pixel()}}
+{\footnotesize\ttfamily \hyperlink{classPixel}{Pixel} $\ast$ Image\+::get\+\_\+pixel (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{int}]{j }\end{DoxyParamCaption})}
+
+
+
+Get the pixel object at position (i,j) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & an integer giving the line of the pixel \\
+\hline
+{\em j} & an integer giving the column of the pixel \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pixel$\ast$ a pointer to a \hyperlink{classPixel}{Pixel} object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classImage_af1a715bc9351b3385bd0591dfe3ce464}\label{classImage_af1a715bc9351b3385bd0591dfe3ce464}} 
+\index{Image@{Image}!get\+\_\+pixels@{get\+\_\+pixels}}
+\index{get\+\_\+pixels@{get\+\_\+pixels}!Image@{Image}}
+\subsubsection{\texorpdfstring{get\+\_\+pixels()}{get\_pixels()}}
+{\footnotesize\ttfamily const map$<$ pair$<$ int, int $>$, \hyperlink{classPixel}{Pixel} $>$ $\ast$ Image\+::get\+\_\+pixels (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get all the pixels of the image. 
+
+\begin{DoxyReturn}{Returns}
+const std\+::map$<$std\+::pair$<$int, int$>$, \hyperlink{classPixel}{Pixel}$>$$\ast$ a constant pointer to a map of pixels associated to their (i,j) position 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classImage_a1642b1ab6e1c8d15c78a59557642c20f}\label{classImage_a1642b1ab6e1c8d15c78a59557642c20f}} 
+\index{Image@{Image}!get\+\_\+width@{get\+\_\+width}}
+\index{get\+\_\+width@{get\+\_\+width}!Image@{Image}}
+\subsubsection{\texorpdfstring{get\+\_\+width()}{get\_width()}}
+{\footnotesize\ttfamily int Image\+::get\+\_\+width (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the image\textquotesingle{}s width in number of pixels. 
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classImage_a0d6de27cb2fbdf03bcdd68c92f8dbf6a}\label{classImage_a0d6de27cb2fbdf03bcdd68c92f8dbf6a}} 
+\index{Image@{Image}!is\+\_\+binary@{is\+\_\+binary}}
+\index{is\+\_\+binary@{is\+\_\+binary}!Image@{Image}}
+\subsubsection{\texorpdfstring{is\+\_\+binary()}{is\_binary()}}
+{\footnotesize\ttfamily bool Image\+::is\+\_\+binary (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Check if the image is to be encoded in binary. 
+
+\begin{DoxyReturn}{Returns}
+bool 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classImage_a312d5af7ef1f889ad1742b24638d86de}\label{classImage_a312d5af7ef1f889ad1742b24638d86de}} 
+\index{Image@{Image}!is\+\_\+gray@{is\+\_\+gray}}
+\index{is\+\_\+gray@{is\+\_\+gray}!Image@{Image}}
+\subsubsection{\texorpdfstring{is\+\_\+gray()}{is\_gray()}}
+{\footnotesize\ttfamily bool Image\+::is\+\_\+gray (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Check if the image is in grayscale. 
+
+\begin{DoxyReturn}{Returns}
+bool 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{Image_8h}{Image.\+h}\item 
+src/Image.\+cpp\end{DoxyCompactItemize}

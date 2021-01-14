@@ -1,0 +1,249 @@
+\hypertarget{classPixel}{}\section{Pixel Class Reference}
+\label{classPixel}\index{Pixel@{Pixel}}
+
+
+A class defining a custom pixel \+: R\+GB components with custom attributes \+:  
+
+
+
+
+{\ttfamily \#include $<$Pixel.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classPixel_a27ad99a2f705e635c42d242d530d4756}\label{classPixel_a27ad99a2f705e635c42d242d530d4756}} 
+\hyperlink{classPixel_a27ad99a2f705e635c42d242d530d4756}{Pixel} ()
+\begin{DoxyCompactList}\small\item\em Default constructor \+: construct a new \hyperlink{classPixel}{Pixel} object. \end{DoxyCompactList}\item 
+\hyperlink{classPixel_a9ba4bf2d33c6d503e30059e61a43c045}{Pixel} (int R, int G, int B)
+\begin{DoxyCompactList}\small\item\em Construct a new \hyperlink{classPixel}{Pixel} object. \end{DoxyCompactList}\item 
+int \hyperlink{classPixel_ab2a26e47e90930b95012d56ca4dab3c0}{get\+\_\+R} () const
+\begin{DoxyCompactList}\small\item\em Get the R component. \end{DoxyCompactList}\item 
+int \hyperlink{classPixel_a7b8fb5740fe9ba2ff2960aa6d144cafe}{get\+\_\+G} () const
+\begin{DoxyCompactList}\small\item\em Get the G component. \end{DoxyCompactList}\item 
+int \hyperlink{classPixel_a50ea40ab4b069cd9cebe3a4d006466b4}{get\+\_\+B} () const
+\begin{DoxyCompactList}\small\item\em Get the B component. \end{DoxyCompactList}\item 
+float \hyperlink{classPixel_a07decaf3ba6ff526c8fa53fd730e9705}{get\+\_\+x} () const
+\begin{DoxyCompactList}\small\item\em Get the x theoretical coordinate of the pixel on the terrain. \end{DoxyCompactList}\item 
+float \hyperlink{classPixel_a6fcdc22470b74d9c1f704d0e670176ca}{get\+\_\+y} () const
+\begin{DoxyCompactList}\small\item\em Get the y theoretical coordinate of the pixel on the terrain. \end{DoxyCompactList}\item 
+const std\+::vector$<$ int $>$ $\ast$ \hyperlink{classPixel_a93366a506c032d97b25230469f0ca507}{get\+\_\+triangles\+\_\+indexes} () const
+\begin{DoxyCompactList}\small\item\em Get the possible triangles\textquotesingle{} indexes for the pixel. Enable to identify to which triangular zone of the terrain the pixel belongs to. \end{DoxyCompactList}\item 
+void \hyperlink{classPixel_a209745683886a3ccffd14e960edbed6c}{set\+\_\+\+R\+GB} (float elevation, const float min\+\_\+elevation, const float max\+\_\+elevation)
+\begin{DoxyCompactList}\small\item\em Set the R\+GB components. \end{DoxyCompactList}\item 
+void \hyperlink{classPixel_a51eafb0e5972c7f0f435354247a56966}{set\+\_\+gray\+\_\+intensity} (float elevation, const float min\+\_\+elevation, const float max\+\_\+elevation)
+\begin{DoxyCompactList}\small\item\em Set the the R\+GB components for grayscale images. \end{DoxyCompactList}\item 
+void \hyperlink{classPixel_af3245cdbe500abac1ff2af1575c5770f}{set\+\_\+x\+\_\+y} (int i, int j, const int img\+\_\+width, const int img\+\_\+height, const float xmin, const float xmax, const float ymin, const float ymax)
+\begin{DoxyCompactList}\small\item\em Set the theoretical coordinates (x,y) of the pixel on the terrain (projection) \end{DoxyCompactList}\item 
+void \hyperlink{classPixel_a9adc1965e90a981eb8723087b41a87cd}{add\+\_\+triangle\+\_\+index} (int index)
+\begin{DoxyCompactList}\small\item\em Add the index of a possible triangular zone of belonging. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A class defining a custom pixel \+: R\+GB components with custom attributes \+: 
+
+
+\begin{DoxyItemize}
+\item (x,y) theoretical coordinates in the terrain
+\item the associated triangular zones after Delaunay\textquotesingle{}s triangulation of the terrain (if applicable) 
+\end{DoxyItemize}
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classPixel_a9ba4bf2d33c6d503e30059e61a43c045}\label{classPixel_a9ba4bf2d33c6d503e30059e61a43c045}} 
+\index{Pixel@{Pixel}!Pixel@{Pixel}}
+\index{Pixel@{Pixel}!Pixel@{Pixel}}
+\subsubsection{\texorpdfstring{Pixel()}{Pixel()}}
+{\footnotesize\ttfamily Pixel\+::\+Pixel (\begin{DoxyParamCaption}\item[{int}]{R,  }\item[{int}]{G,  }\item[{int}]{B }\end{DoxyParamCaption})}
+
+
+
+Construct a new \hyperlink{classPixel}{Pixel} object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em R} & an integer \+: the red component of the pixel \\
+\hline
+{\em G} & an integer \+: the green component of the pixel \\
+\hline
+{\em B} & an integer \+: the blue component of the pixel \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classPixel_a9adc1965e90a981eb8723087b41a87cd}\label{classPixel_a9adc1965e90a981eb8723087b41a87cd}} 
+\index{Pixel@{Pixel}!add\+\_\+triangle\+\_\+index@{add\+\_\+triangle\+\_\+index}}
+\index{add\+\_\+triangle\+\_\+index@{add\+\_\+triangle\+\_\+index}!Pixel@{Pixel}}
+\subsubsection{\texorpdfstring{add\+\_\+triangle\+\_\+index()}{add\_triangle\_index()}}
+{\footnotesize\ttfamily void Pixel\+::add\+\_\+triangle\+\_\+index (\begin{DoxyParamCaption}\item[{int}]{index }\end{DoxyParamCaption})}
+
+
+
+Add the index of a possible triangular zone of belonging. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & an integer giving the index of the triangle in Delaunay\textquotesingle{}s vector \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classPixel_a50ea40ab4b069cd9cebe3a4d006466b4}\label{classPixel_a50ea40ab4b069cd9cebe3a4d006466b4}} 
+\index{Pixel@{Pixel}!get\+\_\+B@{get\+\_\+B}}
+\index{get\+\_\+B@{get\+\_\+B}!Pixel@{Pixel}}
+\subsubsection{\texorpdfstring{get\+\_\+\+B()}{get\_B()}}
+{\footnotesize\ttfamily int Pixel\+::get\+\_\+B (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the B component. 
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classPixel_a7b8fb5740fe9ba2ff2960aa6d144cafe}\label{classPixel_a7b8fb5740fe9ba2ff2960aa6d144cafe}} 
+\index{Pixel@{Pixel}!get\+\_\+G@{get\+\_\+G}}
+\index{get\+\_\+G@{get\+\_\+G}!Pixel@{Pixel}}
+\subsubsection{\texorpdfstring{get\+\_\+\+G()}{get\_G()}}
+{\footnotesize\ttfamily int Pixel\+::get\+\_\+G (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the G component. 
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classPixel_ab2a26e47e90930b95012d56ca4dab3c0}\label{classPixel_ab2a26e47e90930b95012d56ca4dab3c0}} 
+\index{Pixel@{Pixel}!get\+\_\+R@{get\+\_\+R}}
+\index{get\+\_\+R@{get\+\_\+R}!Pixel@{Pixel}}
+\subsubsection{\texorpdfstring{get\+\_\+\+R()}{get\_R()}}
+{\footnotesize\ttfamily int Pixel\+::get\+\_\+R (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the R component. 
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classPixel_a93366a506c032d97b25230469f0ca507}\label{classPixel_a93366a506c032d97b25230469f0ca507}} 
+\index{Pixel@{Pixel}!get\+\_\+triangles\+\_\+indexes@{get\+\_\+triangles\+\_\+indexes}}
+\index{get\+\_\+triangles\+\_\+indexes@{get\+\_\+triangles\+\_\+indexes}!Pixel@{Pixel}}
+\subsubsection{\texorpdfstring{get\+\_\+triangles\+\_\+indexes()}{get\_triangles\_indexes()}}
+{\footnotesize\ttfamily const vector$<$ int $>$ $\ast$ Pixel\+::get\+\_\+triangles\+\_\+indexes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the possible triangles\textquotesingle{} indexes for the pixel. Enable to identify to which triangular zone of the terrain the pixel belongs to. 
+
+\begin{DoxyReturn}{Returns}
+const std\+::vector$<$int$>$$\ast$ a pointer to the vector of indexes 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classPixel_a07decaf3ba6ff526c8fa53fd730e9705}\label{classPixel_a07decaf3ba6ff526c8fa53fd730e9705}} 
+\index{Pixel@{Pixel}!get\+\_\+x@{get\+\_\+x}}
+\index{get\+\_\+x@{get\+\_\+x}!Pixel@{Pixel}}
+\subsubsection{\texorpdfstring{get\+\_\+x()}{get\_x()}}
+{\footnotesize\ttfamily float Pixel\+::get\+\_\+x (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the x theoretical coordinate of the pixel on the terrain. 
+
+\begin{DoxyReturn}{Returns}
+float 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classPixel_a6fcdc22470b74d9c1f704d0e670176ca}\label{classPixel_a6fcdc22470b74d9c1f704d0e670176ca}} 
+\index{Pixel@{Pixel}!get\+\_\+y@{get\+\_\+y}}
+\index{get\+\_\+y@{get\+\_\+y}!Pixel@{Pixel}}
+\subsubsection{\texorpdfstring{get\+\_\+y()}{get\_y()}}
+{\footnotesize\ttfamily float Pixel\+::get\+\_\+y (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get the y theoretical coordinate of the pixel on the terrain. 
+
+\begin{DoxyReturn}{Returns}
+float 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classPixel_a51eafb0e5972c7f0f435354247a56966}\label{classPixel_a51eafb0e5972c7f0f435354247a56966}} 
+\index{Pixel@{Pixel}!set\+\_\+gray\+\_\+intensity@{set\+\_\+gray\+\_\+intensity}}
+\index{set\+\_\+gray\+\_\+intensity@{set\+\_\+gray\+\_\+intensity}!Pixel@{Pixel}}
+\subsubsection{\texorpdfstring{set\+\_\+gray\+\_\+intensity()}{set\_gray\_intensity()}}
+{\footnotesize\ttfamily void Pixel\+::set\+\_\+gray\+\_\+intensity (\begin{DoxyParamCaption}\item[{float}]{elevation,  }\item[{const float}]{min\+\_\+elevation,  }\item[{const float}]{max\+\_\+elevation }\end{DoxyParamCaption})}
+
+
+
+Set the the R\+GB components for grayscale images. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em elevation} & a float giving the altitude of the corresponding point on the terrain \\
+\hline
+{\em min\+\_\+elevation} & a float giving the minimal altitude on the terrain \\
+\hline
+{\em max\+\_\+elevation} & a float giving the maximal altitude on the terrain \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classPixel_a209745683886a3ccffd14e960edbed6c}\label{classPixel_a209745683886a3ccffd14e960edbed6c}} 
+\index{Pixel@{Pixel}!set\+\_\+\+R\+GB@{set\+\_\+\+R\+GB}}
+\index{set\+\_\+\+R\+GB@{set\+\_\+\+R\+GB}!Pixel@{Pixel}}
+\subsubsection{\texorpdfstring{set\+\_\+\+R\+G\+B()}{set\_RGB()}}
+{\footnotesize\ttfamily void Pixel\+::set\+\_\+\+R\+GB (\begin{DoxyParamCaption}\item[{float}]{elevation,  }\item[{const float}]{min\+\_\+elevation,  }\item[{const float}]{max\+\_\+elevation }\end{DoxyParamCaption})}
+
+
+
+Set the R\+GB components. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em elevation} & a float giving the altitude of the corresponding point on the terrain \\
+\hline
+{\em min\+\_\+elevation} & a float giving the minimal altitude on the terrain \\
+\hline
+{\em max\+\_\+elevation} & a float giving the maximal altitude on the terrain \\
+\hline
+\end{DoxyParams}
+Create a simple rainbow colormap. To convert a scalar to a rainbow, we divide the scalar into four groups. Then based on which group we are in, we perform one of the following linear interpolations\+:
+
+
+\begin{DoxyItemize}
+\item Group 1\+: Red is maximum (255), blue is zero, and green varies linearly from 0 to 255.
+\item Group 2\+: Green is kept maximum and blue is still zero. Red varies linearly from 255 to 0.
+\item Group 3\+: Keep red at zero and green and maximum. Blue varies linearly from 0 to 255.
+\item Group 4\+: Red is kept at zero and blue at maximum. Green varies linearly from 255 to 0.
+\end{DoxyItemize}
+
+This ordering follows the image in the Wikipedia article. One downside of this approach is that it will vary from red to blue as f varies from 0 to 1. Typically, we want the opposite, with 0 mapping to blue and 1 to red. So we simply invert the scalar as a=1-\/f. \mbox{\Hypertarget{classPixel_af3245cdbe500abac1ff2af1575c5770f}\label{classPixel_af3245cdbe500abac1ff2af1575c5770f}} 
+\index{Pixel@{Pixel}!set\+\_\+x\+\_\+y@{set\+\_\+x\+\_\+y}}
+\index{set\+\_\+x\+\_\+y@{set\+\_\+x\+\_\+y}!Pixel@{Pixel}}
+\subsubsection{\texorpdfstring{set\+\_\+x\+\_\+y()}{set\_x\_y()}}
+{\footnotesize\ttfamily void Pixel\+::set\+\_\+x\+\_\+y (\begin{DoxyParamCaption}\item[{int}]{i,  }\item[{int}]{j,  }\item[{const int}]{img\+\_\+width,  }\item[{const int}]{img\+\_\+height,  }\item[{const float}]{xmin,  }\item[{const float}]{xmax,  }\item[{const float}]{ymin,  }\item[{const float}]{ymax }\end{DoxyParamCaption})}
+
+
+
+Set the theoretical coordinates (x,y) of the pixel on the terrain (projection) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & an integer giving the line of the pixel \\
+\hline
+{\em j} & an interger giving the column of the pixel \\
+\hline
+{\em img\+\_\+width} & a constant integer \\
+\hline
+{\em img\+\_\+height} & a constant integer \\
+\hline
+{\em xmin} & a constant float giving the minimal x coordinate on the sampled terrain \\
+\hline
+{\em xmax} & a constant float giving the maximal x coordinate on the sampled terrain \\
+\hline
+{\em ymin} & a constant float giving the minimal y coordinate on the sampled terrain \\
+\hline
+{\em ymax} & a constant float giving the maximal y coordinate on the sampled terrain \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{Pixel_8h}{Pixel.\+h}\item 
+src/Pixel.\+cpp\end{DoxyCompactItemize}

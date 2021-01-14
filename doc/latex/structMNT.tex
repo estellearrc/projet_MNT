@@ -1,0 +1,84 @@
+\hypertarget{structMNT}{}\section{M\+NT Struct Reference}
+\label{structMNT}\index{M\+NT@{M\+NT}}
+
+
+Digital Terrain Model structure (D\+TM or \hyperlink{structMNT}{M\+NT} in French) composed of\+:  
+
+
+
+
+{\ttfamily \#include $<$utils.\+h$>$}
+
+
+
+Collaboration diagram for M\+NT\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=132pt]{structMNT__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structMNT_a8626ef7ebc59484acd44ae4a3fab6fde}\label{structMNT_a8626ef7ebc59484acd44ae4a3fab6fde}} 
+float {\bfseries xmin} = 0
+\item 
+\mbox{\Hypertarget{structMNT_aa1335893335ca42e17ce1859b8bb620f}\label{structMNT_aa1335893335ca42e17ce1859b8bb620f}} 
+float {\bfseries xmax} = 0
+\item 
+\mbox{\Hypertarget{structMNT_ae6b46ea3a14d8ece99baf7b342165074}\label{structMNT_ae6b46ea3a14d8ece99baf7b342165074}} 
+float {\bfseries ymin} = 0
+\item 
+\mbox{\Hypertarget{structMNT_a319e2c8bc5dbc576c5fc1450526aa459}\label{structMNT_a319e2c8bc5dbc576c5fc1450526aa459}} 
+float {\bfseries ymax} = 0
+\item 
+\mbox{\Hypertarget{structMNT_a313da80d0a8fd24ba56ba51e070c29b2}\label{structMNT_a313da80d0a8fd24ba56ba51e070c29b2}} 
+float {\bfseries min\+\_\+elevation} = 0
+\item 
+\mbox{\Hypertarget{structMNT_a0fa2bb2fc8258a96212568496d860bf1}\label{structMNT_a0fa2bb2fc8258a96212568496d860bf1}} 
+float {\bfseries max\+\_\+elevation} = 0
+\item 
+\mbox{\Hypertarget{structMNT_ab5ae1542f4759c4b6514b852dfda969a}\label{structMNT_ab5ae1542f4759c4b6514b852dfda969a}} 
+bool {\bfseries triangulation} = false
+\item 
+\mbox{\Hypertarget{structMNT_aad42a6c005fe6a63f7792cca148f898d}\label{structMNT_aad42a6c005fe6a63f7792cca148f898d}} 
+std\+::map$<$ std\+::pair$<$ float, float $>$, float $>$ {\bfseries elevations}
+\item 
+\mbox{\Hypertarget{structMNT_a37602fb86c7aeb6b974a385d7c20bf48}\label{structMNT_a37602fb86c7aeb6b974a385d7c20bf48}} 
+\hyperlink{classImage}{Image} {\bfseries image}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Digital Terrain Model structure (D\+TM or \hyperlink{structMNT}{M\+NT} in French) composed of\+: 
+
+
+\begin{DoxyItemize}
+\item Some parameters (xmin, xmax, ymin, yman, min\+\_\+elevation, max\+\_\+elevation, triangulation)
+\item All the (x,y) coordinates of the sampled terrain and their corresponding elevation
+\item An image representing the sampled terrain
+\end{DoxyItemize}
+
+Details about attributes\+: 
+\begin{DoxyParams}{Parameters}
+{\em xmin} & a constant float giving the minimal x coordinate on the sampled terrain \\
+\hline
+{\em xmax} & a constant float giving the maximal x coordinate on the sampled terrain \\
+\hline
+{\em ymin} & a constant float giving the minimal y coordinate on the sampled terrain \\
+\hline
+{\em ymax} & a constant float giving the maximal y coordinate on the sampled terrain \\
+\hline
+{\em triangulation} & a boolean indicating whether Delaunay\textquotesingle{}s is to be performed \\
+\hline
+{\em elevations} & a map of pair of floating coordinates (x,y) associated to the floating altitude of the point on the terrain \\
+\hline
+{\em image} & an \hyperlink{classImage}{Image} object representing the Digital Terrain Model (final output of the program) \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{utils_8h}{utils.\+h}\end{DoxyCompactItemize}

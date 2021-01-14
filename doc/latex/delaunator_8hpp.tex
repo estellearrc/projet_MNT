@@ -1,0 +1,65 @@
+\hypertarget{delaunator_8hpp}{}\section{src/delaunator.hpp File Reference}
+\label{delaunator_8hpp}\index{src/delaunator.\+hpp@{src/delaunator.\+hpp}}
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include $<$exception$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$limits$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+Include dependency graph for delaunator.\+hpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{delaunator_8hpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structdelaunator_1_1compare}{delaunator\+::compare}
+\item 
+struct \hyperlink{structdelaunator_1_1DelaunatorPoint}{delaunator\+::\+Delaunator\+Point}
+\item 
+class \hyperlink{classdelaunator_1_1Delaunator}{delaunator\+::\+Delaunator}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{delaunator_8hpp_a3bf510ee4922ac9e97b969e0c405e98b}\label{delaunator_8hpp_a3bf510ee4922ac9e97b969e0c405e98b}} 
+size\+\_\+t {\bfseries delaunator\+::fast\+\_\+mod} (const size\+\_\+t i, const size\+\_\+t c)
+\item 
+\mbox{\Hypertarget{delaunator_8hpp_aa0fda089647a091b92b8548ad3c0f100}\label{delaunator_8hpp_aa0fda089647a091b92b8548ad3c0f100}} 
+double {\bfseries delaunator\+::sum} (const std\+::vector$<$ double $>$ \&x)
+\item 
+\mbox{\Hypertarget{delaunator_8hpp_a9e2a3ffc907659930fa0edad646d49dc}\label{delaunator_8hpp_a9e2a3ffc907659930fa0edad646d49dc}} 
+double {\bfseries delaunator\+::dist} (const double ax, const double ay, const double bx, const double by)
+\item 
+\mbox{\Hypertarget{delaunator_8hpp_a41cf84f19316cc7fb922b160b35af8f9}\label{delaunator_8hpp_a41cf84f19316cc7fb922b160b35af8f9}} 
+double {\bfseries delaunator\+::circumradius} (const double ax, const double ay, const double bx, const double by, const double cx, const double cy)
+\item 
+\mbox{\Hypertarget{delaunator_8hpp_aebc9337156dd42cb19372d15119525db}\label{delaunator_8hpp_aebc9337156dd42cb19372d15119525db}} 
+bool {\bfseries delaunator\+::orient} (const double px, const double py, const double qx, const double qy, const double rx, const double ry)
+\item 
+\mbox{\Hypertarget{delaunator_8hpp_a4130131df38cca8830863a2209794347}\label{delaunator_8hpp_a4130131df38cca8830863a2209794347}} 
+std\+::pair$<$ double, double $>$ {\bfseries delaunator\+::circumcenter} (const double ax, const double ay, const double bx, const double by, const double cx, const double cy)
+\item 
+\mbox{\Hypertarget{delaunator_8hpp_a5e7a51e33a9d4eea7ac9ca2e38aa7fa6}\label{delaunator_8hpp_a5e7a51e33a9d4eea7ac9ca2e38aa7fa6}} 
+bool {\bfseries delaunator\+::in\+\_\+circle} (const double ax, const double ay, const double bx, const double by, const double cx, const double cy, const double px, const double py)
+\item 
+\mbox{\Hypertarget{delaunator_8hpp_acd98fbc5da3dc94d8ee30d704eed18e9}\label{delaunator_8hpp_acd98fbc5da3dc94d8ee30d704eed18e9}} 
+bool {\bfseries delaunator\+::check\+\_\+pts\+\_\+equal} (double x1, double y1, double x2, double y2)
+\item 
+\mbox{\Hypertarget{delaunator_8hpp_a3cdb1c51389d918a83f3db7264891305}\label{delaunator_8hpp_a3cdb1c51389d918a83f3db7264891305}} 
+double {\bfseries delaunator\+::pseudo\+\_\+angle} (const double dx, const double dy)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{delaunator_8hpp_a2bba00df8f04d31916772f7ebc15734c}\label{delaunator_8hpp_a2bba00df8f04d31916772f7ebc15734c}} 
+constexpr double {\bfseries delaunator\+::\+E\+P\+S\+I\+L\+ON} = std\+::numeric\+\_\+limits$<$double$>$\+::epsilon()
+\item 
+\mbox{\Hypertarget{delaunator_8hpp_acb0d4406320caf27239204ed6e5809bf}\label{delaunator_8hpp_acb0d4406320caf27239204ed6e5809bf}} 
+constexpr std\+::size\+\_\+t {\bfseries delaunator\+::\+I\+N\+V\+A\+L\+I\+D\+\_\+\+I\+N\+D\+EX} = std\+::numeric\+\_\+limits$<$std\+::size\+\_\+t$>$\+::max()
+\end{DoxyCompactItemize}

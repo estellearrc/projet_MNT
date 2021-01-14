@@ -1,0 +1,145 @@
+\hypertarget{utils_8h}{}\section{src/utils.h File Reference}
+\label{utils_8h}\index{src/utils.\+h@{src/utils.\+h}}
+
+
+A file containing useful structure and functions to generate a D\+TM or \hyperlink{structMNT}{M\+NT} in French.  
+
+
+{\ttfamily \#include $<$cstdlib$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$proj.\+h$>$}\newline
+{\ttfamily \#include $<$cstdio$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$map$>$}\newline
+{\ttfamily \#include \char`\"{}Image.\+h\char`\"{}}\newline
+Include dependency graph for utils.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{utils_8h__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structMNT}{M\+NT}
+\begin{DoxyCompactList}\small\item\em Digital Terrain Model structure (D\+TM or \hyperlink{structMNT}{M\+NT} in French) composed of\+: \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structMNT}{M\+NT} \hyperlink{utils_8h_af26108b5c5ba4562d8cc73e2cde8b994}{read\+\_\+data} (const char $\ast$file\+\_\+path, std\+::vector$<$ double $>$ \&coords, const int image\+\_\+width, bool triangulation, bool is\+\_\+gray, bool is\+\_\+binary)
+\begin{DoxyCompactList}\small\item\em Read the raw sampled data of the terrain and init an \hyperlink{structMNT}{M\+NT} object. The raw data have 3 coordinates (longitude, latitude, elevation) to be projected -\/ thanks to Lambert 93 projection -\/ into (northing, easting, elevation). They are saved into {\bfseries coords} vector and an \hyperlink{structMNT}{M\+NT} object is created. \end{DoxyCompactList}\item 
+void \hyperlink{utils_8h_a2398d95aa1a7f7483e5b74e06f57c85a}{write\+\_\+image} (const \hyperlink{classImage}{Image} \&image, std\+::string file\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Write an image file according to its encoding parameters. \end{DoxyCompactList}\item 
+void \hyperlink{utils_8h_a02e38d3b2d8f2d521e4b5747d397aefd}{convert\+\_\+data\+\_\+to\+\_\+pixels} (\hyperlink{structMNT}{M\+NT} \&raster)
+\begin{DoxyCompactList}\small\item\em Convert raw data elevations into R\+GB components for the image\textquotesingle{}s pixels. \end{DoxyCompactList}\item 
+void \hyperlink{utils_8h_a3fe45b5304a807b6b17248f452106bd9}{convert\+\_\+data\+\_\+to\+\_\+pixels\+\_\+delaunay} (std\+::vector$<$ double $>$ \&coords, \hyperlink{structMNT}{M\+NT} \&raster)
+\begin{DoxyCompactList}\small\item\em Convert raw data elevations into R\+GB components for the image\textquotesingle{}s pixels after performing Delaunay\textquotesingle{}s triangulation of the points of the terrain. \end{DoxyCompactList}\item 
+void \hyperlink{utils_8h_a26d8307e7a6d814f560b3e2aba762850}{associate\+\_\+triangle\+\_\+summits\+\_\+to\+\_\+pixels} (\hyperlink{structMNT}{M\+NT} \&raster, const std\+::vector$<$ size\+\_\+t $>$ \&triangles, const std\+::vector$<$ double $>$ \&coords)
+\begin{DoxyCompactList}\small\item\em Only applicable if Delaunay\textquotesingle{}s triangulation is performed on the sampled points of the terrain. Associate the possible triangular zones of belonging for each pixel of the image. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A file containing useful structure and functions to generate a D\+TM or \hyperlink{structMNT}{M\+NT} in French. 
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{utils_8h_a26d8307e7a6d814f560b3e2aba762850}\label{utils_8h_a26d8307e7a6d814f560b3e2aba762850}} 
+\index{utils.\+h@{utils.\+h}!associate\+\_\+triangle\+\_\+summits\+\_\+to\+\_\+pixels@{associate\+\_\+triangle\+\_\+summits\+\_\+to\+\_\+pixels}}
+\index{associate\+\_\+triangle\+\_\+summits\+\_\+to\+\_\+pixels@{associate\+\_\+triangle\+\_\+summits\+\_\+to\+\_\+pixels}!utils.\+h@{utils.\+h}}
+\subsubsection{\texorpdfstring{associate\+\_\+triangle\+\_\+summits\+\_\+to\+\_\+pixels()}{associate\_triangle\_summits\_to\_pixels()}}
+{\footnotesize\ttfamily void associate\+\_\+triangle\+\_\+summits\+\_\+to\+\_\+pixels (\begin{DoxyParamCaption}\item[{\hyperlink{structMNT}{M\+NT} \&}]{raster,  }\item[{const std\+::vector$<$ size\+\_\+t $>$ \&}]{triangles,  }\item[{const std\+::vector$<$ double $>$ \&}]{coords }\end{DoxyParamCaption})}
+
+
+
+Only applicable if Delaunay\textquotesingle{}s triangulation is performed on the sampled points of the terrain. Associate the possible triangular zones of belonging for each pixel of the image. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em raster} & an \hyperlink{structMNT}{M\+NT} object \\
+\hline
+{\em triangles} & a vector containing all the summits of the triangles determined by Delaunay\textquotesingle{}s triangulation of the terrain. \\
+\hline
+{\em coords} & a vector of the coordinates (x,y) of the sampled data of the terrain \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{utils_8h_a02e38d3b2d8f2d521e4b5747d397aefd}\label{utils_8h_a02e38d3b2d8f2d521e4b5747d397aefd}} 
+\index{utils.\+h@{utils.\+h}!convert\+\_\+data\+\_\+to\+\_\+pixels@{convert\+\_\+data\+\_\+to\+\_\+pixels}}
+\index{convert\+\_\+data\+\_\+to\+\_\+pixels@{convert\+\_\+data\+\_\+to\+\_\+pixels}!utils.\+h@{utils.\+h}}
+\subsubsection{\texorpdfstring{convert\+\_\+data\+\_\+to\+\_\+pixels()}{convert\_data\_to\_pixels()}}
+{\footnotesize\ttfamily void convert\+\_\+data\+\_\+to\+\_\+pixels (\begin{DoxyParamCaption}\item[{\hyperlink{structMNT}{M\+NT} \&}]{raster }\end{DoxyParamCaption})}
+
+
+
+Convert raw data elevations into R\+GB components for the image\textquotesingle{}s pixels. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em raster} & an \hyperlink{structMNT}{M\+NT} object \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{utils_8h_a3fe45b5304a807b6b17248f452106bd9}\label{utils_8h_a3fe45b5304a807b6b17248f452106bd9}} 
+\index{utils.\+h@{utils.\+h}!convert\+\_\+data\+\_\+to\+\_\+pixels\+\_\+delaunay@{convert\+\_\+data\+\_\+to\+\_\+pixels\+\_\+delaunay}}
+\index{convert\+\_\+data\+\_\+to\+\_\+pixels\+\_\+delaunay@{convert\+\_\+data\+\_\+to\+\_\+pixels\+\_\+delaunay}!utils.\+h@{utils.\+h}}
+\subsubsection{\texorpdfstring{convert\+\_\+data\+\_\+to\+\_\+pixels\+\_\+delaunay()}{convert\_data\_to\_pixels\_delaunay()}}
+{\footnotesize\ttfamily void convert\+\_\+data\+\_\+to\+\_\+pixels\+\_\+delaunay (\begin{DoxyParamCaption}\item[{std\+::vector$<$ double $>$ \&}]{coords,  }\item[{\hyperlink{structMNT}{M\+NT} \&}]{raster }\end{DoxyParamCaption})}
+
+
+
+Convert raw data elevations into R\+GB components for the image\textquotesingle{}s pixels after performing Delaunay\textquotesingle{}s triangulation of the points of the terrain. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em coords} & a vector of the coordinates (x,y) of the sampled data of the terrain \\
+\hline
+{\em raster} & an \hyperlink{structMNT}{M\+NT} object \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{utils_8h_af26108b5c5ba4562d8cc73e2cde8b994}\label{utils_8h_af26108b5c5ba4562d8cc73e2cde8b994}} 
+\index{utils.\+h@{utils.\+h}!read\+\_\+data@{read\+\_\+data}}
+\index{read\+\_\+data@{read\+\_\+data}!utils.\+h@{utils.\+h}}
+\subsubsection{\texorpdfstring{read\+\_\+data()}{read\_data()}}
+{\footnotesize\ttfamily \hyperlink{structMNT}{M\+NT} read\+\_\+data (\begin{DoxyParamCaption}\item[{const char $\ast$}]{file\+\_\+path,  }\item[{std\+::vector$<$ double $>$ \&}]{coords,  }\item[{const int}]{image\+\_\+width,  }\item[{bool}]{triangulation,  }\item[{bool}]{is\+\_\+gray,  }\item[{bool}]{is\+\_\+binary }\end{DoxyParamCaption})}
+
+
+
+Read the raw sampled data of the terrain and init an \hyperlink{structMNT}{M\+NT} object. The raw data have 3 coordinates (longitude, latitude, elevation) to be projected -\/ thanks to Lambert 93 projection -\/ into (northing, easting, elevation). They are saved into {\bfseries coords} vector and an \hyperlink{structMNT}{M\+NT} object is created. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em file\+\_\+path} & a string indicating the full-\/path or relative one to the text document containing the terrain data to read \\
+\hline
+{\em coords} & a vector of the coordinates (x,y) of the sampled data of the terrain \\
+\hline
+{\em image\+\_\+width} & an integer chosen by the user to define the resolution if the image output \\
+\hline
+{\em triangulation} & a bool to indicate whether Delaunay\textquotesingle{}s triangulation is to be performed on the (x,y) sampled coordinates of the terrain \\
+\hline
+{\em is\+\_\+gray} & a bool indicating if the output image should be in grayscale or in color \\
+\hline
+{\em is\+\_\+binary} & a bool indicating if the output image should be encoded in binary or not \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\hyperlink{structMNT}{M\+NT} object 
+\end{DoxyReturn}
+\mbox{\Hypertarget{utils_8h_a2398d95aa1a7f7483e5b74e06f57c85a}\label{utils_8h_a2398d95aa1a7f7483e5b74e06f57c85a}} 
+\index{utils.\+h@{utils.\+h}!write\+\_\+image@{write\+\_\+image}}
+\index{write\+\_\+image@{write\+\_\+image}!utils.\+h@{utils.\+h}}
+\subsubsection{\texorpdfstring{write\+\_\+image()}{write\_image()}}
+{\footnotesize\ttfamily void write\+\_\+image (\begin{DoxyParamCaption}\item[{const \hyperlink{classImage}{Image} \&}]{image,  }\item[{std\+::string}]{file\+\_\+name }\end{DoxyParamCaption})}
+
+
+
+Write an image file according to its encoding parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em image} & an \hyperlink{classImage}{Image} object \\
+\hline
+{\em file\+\_\+name} & a string giving the full path or relative one of the image file and the name of it. The file extension is determined thanks to the encoding parameters of the \hyperlink{classImage}{Image} object. \\
+\hline
+\end{DoxyParams}
