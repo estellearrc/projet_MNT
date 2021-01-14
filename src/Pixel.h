@@ -7,6 +7,10 @@
 #include <vector>
 
 /**
+ * @file
+ */
+
+/**
  * @class Pixel
  * @brief A class defining a custom pixel : RGB components with custom attributes :
  * * (x,y) theoretical coordinates in the terrain

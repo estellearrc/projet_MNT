@@ -6,6 +6,10 @@
 #include "Pixel.h"
 
 /**
+ * @file
+ */
+
+/**
  * @class Image
  * @brief A class defining a custom image with some classic attributes :
  * * width

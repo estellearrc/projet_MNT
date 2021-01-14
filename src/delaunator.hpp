@@ -9,6 +9,10 @@
 #include <utility>
 #include <vector>
 
+/**
+ * @file
+ */
+
 namespace delaunator
 {
 
