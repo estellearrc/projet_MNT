@@ -50,16 +50,16 @@ void Pixel::set_gray_intensity(float elevation, const float min_elevation, const
 }
 void Pixel::set_RGB(float elevation, const float min_elevation, const float max_elevation)
 {
-    //create a short rainbow color map
-
-    /* To convert a scalar to a rainbow, we divide the scalar into four groups. Then based on which group we are in, we perform one of the following linear interpolations:
-
-    Group 1: Red is maximum (255), blue is zero, and green varies linearly from 0 to 255.
-    Group 2: Green is kept maximum and blue is still zero. Red varies linearly from 255 to 0.
-    Group 3: Keep red at zero and green and maximum. Blue varies linearly from 0 to 255.
-    Group 4: Red is kept at zero and blue at maximum. Green varies linearly from 255 to 0.
-
-    This ordering follows the image in the Wikipedia article. One downside of this approach is that it will vary from red to blue as f varies from 0 to 1. Typically, we want the opposite, with 0 mapping to blue and 1 to red. So we simply invert the scalar as a=1-f. */
+    /**
+     * @brief Create a simple rainbow colormap.
+     * To convert a scalar to a rainbow, we divide the scalar into four groups. Then based on which group we are in, we perform one of the following linear interpolations:
+     * 
+     * * Group 1: Red is maximum (255), blue is zero, and green varies linearly from 0 to 255.
+     * * Group 2: Green is kept maximum and blue is still zero. Red varies linearly from 255 to 0.
+     * * Group 3: Keep red at zero and green and maximum. Blue varies linearly from 0 to 255.
+     * * Group 4: Red is kept at zero and blue at maximum. Green varies linearly from 255 to 0.
+     * 
+     * This ordering follows the image in the Wikipedia article. One downside of this approach is that it will vary from red to blue as f varies from 0 to 1. Typically, we want the opposite, with 0 mapping to blue and 1 to red. So we simply invert the scalar as a=1-f. */
 
     float normalized_elevation = 0;
     if (elevation != 0) //elevation normalization only for non-black pixels
