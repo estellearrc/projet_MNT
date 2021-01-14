@@ -15,6 +15,7 @@ MNT read_data(const char *file_path, std::vector<double> &coords, const int imag
         cout << "Impossible d'ouvrir le fichier en lecture" << endl;
     else
     {
+        cout << "Reading data file and performing Lambert93 projection...";
         string s;
         PJ_CONTEXT *C = PJ_DEFAULT_CTX;
         //wgs84 geocentric to lambert93 projection
@@ -79,7 +80,9 @@ MNT read_data(const char *file_path, std::vector<double> &coords, const int imag
         }
         proj_destroy(P);
         in_file.close();
+        cout << " Reading and projection done. File closed." << endl;
     }
+    cout << "Creating raster...";
     //create raster
     MNT raster;
     raster.xmin = xmin;
@@ -91,10 +94,12 @@ MNT read_data(const char *file_path, std::vector<double> &coords, const int imag
     raster.triangulation = triangulation;
     raster.elevations = elevations;
     raster.image = Image(image_width, xmin, xmax, ymin, ymax, is_gray, is_binary);
+    cout << " Creation done" << endl;
     return raster;
 }
 void associate_triangle_summits_to_pixels(MNT &raster, const vector<size_t> &triangles, const vector<double> &coords)
 {
+    cout << "Associating triangular zones to pixels...";
     const int height = raster.image.get_height();
     const int width = raster.image.get_width();
     vector<pair<int, int>> pair_indexes;
@@ -144,16 +149,20 @@ void associate_triangle_summits_to_pixels(MNT &raster, const vector<size_t> &tri
         //remove all elements in the vector
         pair_indexes.clear();
     }
+    cout << " Association done." << endl;
 }
 
 void convert_data_to_pixels_delaunay(std::vector<double> &coords, MNT &raster)
 {
+    cout << "Performing Delaunay's triangulation...";
     const int height = raster.image.get_height();
     const int width = raster.image.get_width();
     delaunator::Delaunator d(coords); //Delaunay's triangulation
+    cout << " Triangulation done." << endl;
     associate_triangle_summits_to_pixels(raster, d.triangles, d.coords);
 
     //for each pixel
+    cout << "Converting data to pixels...";
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
@@ -196,10 +205,12 @@ void convert_data_to_pixels_delaunay(std::vector<double> &coords, MNT &raster)
             }
         }
     }
+    cout << " Conversion done." << endl;
 }
 
 void convert_data_to_pixels(MNT &raster)
 {
+    cout << "Converting data to pixels...";
     const int height = raster.image.get_height();
     const int width = raster.image.get_width();
     for (auto it = raster.elevations.begin(); it != raster.elevations.end(); ++it)
@@ -218,10 +229,12 @@ void convert_data_to_pixels(MNT &raster)
         else
             p->set_RGB(elevation, raster.min_elevation, raster.max_elevation);
     }
+    cout << " Conversion done." << endl;
 }
 
 void write_image(const Image &image, string file_name)
 {
+    cout << "Writing image file...";
     const int height = image.get_height();
     const int width = image.get_width();
     const int magic_number = image.get_magic_number();
@@ -274,4 +287,5 @@ void write_image(const Image &image, string file_name)
     }
 
     ofile.close();
+    cout << " Writing done. File closed." << endl;
 }

@@ -9,7 +9,6 @@
 #include <cstdio>
 #include <vector>
 #include <map>
-#include <bitset>
 #include "Image.h"
 
 /**

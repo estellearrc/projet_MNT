@@ -29,6 +29,6 @@ chmod +x build.sh
 
 ## Sorties
 
-* Documentation du code dans ```/doc/html/index.html``` à ouvrir avec un navigateur web. Voir aussi les commentaires directement dans le code pour plus de détails.
+* Documentation du code [ici](/doc/html/index.html) à ouvrir avec un navigateur web. Voir aussi les commentaires directement dans le code pour plus de détails.
 * Génération des images de MNT dans le dossier ```/images```.
 
